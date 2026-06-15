@@ -38,16 +38,17 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
-# Include API Routers
 from api.v1.auth import router as auth_router
 from api.v1.users import router as users_router
 from api.v1.resume import router as resume_router
 from api.v1.career import router as career_router
+from api.v1.roadmap import router as roadmap_router
 
 app.include_router(auth_router, prefix=settings.API_V1_STR)
 app.include_router(users_router, prefix=settings.API_V1_STR)
 app.include_router(resume_router, prefix=settings.API_V1_STR)
 app.include_router(career_router, prefix=settings.API_V1_STR)
+app.include_router(roadmap_router, prefix=settings.API_V1_STR)
 
 # Global Exception Handler
 @app.exception_handler(Exception)

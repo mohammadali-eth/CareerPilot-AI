@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { useDashboardData } from "../../../hooks/use-dashboard";
 import { useAuthStore } from "../../../store/auth";
+import { useRoadmaps } from "../../../hooks/use-roadmap";
+import { Map, Flame, PlayCircle } from "lucide-react";
 
 type StateType = "success" | "empty" | "error";
 
@@ -24,11 +26,30 @@ export default function DashboardPage() {
   const { user } = useAuthStore();
   const [simulatedState, setSimulatedState] = useState<StateType>("success");
   const { data: stats, isLoading, isError, error, refetch } = useDashboardData(simulatedState);
+  const { data: roadmaps } = useRoadmaps();
 
   const userName =
     user?.profile?.first_name && user?.profile?.last_name
       ? `${user.profile.first_name}`
       : user?.email?.split("@")[0] || "User";
+
+  // Active roadmap processing
+  const activeRoadmap = roadmaps?.find((r) => r.status === "active") || roadmaps?.[0];
+  const milestones = activeRoadmap?.milestones || [];
+  const totalMilestones = milestones.length;
+  const avgProgress = totalMilestones
+    ? Math.floor(milestones.reduce((acc, m) => acc + m.completion_percentage, 0) / totalMilestones)
+    : 0;
+
+  const currentMilestone = milestones.find((m) => m.completion_percentage < 100) || milestones[totalMilestones - 1];
+  
+  const weeklyTasks = activeRoadmap?.roadmap_data?.weekly_tasks || [];
+  const currentWeekNum = Math.min(
+    weeklyTasks.length,
+    Math.floor((weeklyTasks.length * avgProgress) / 100) + 1
+  );
+  const currentWeek = weeklyTasks.find((w) => w.week_number === currentWeekNum);
+  const nextTask = currentWeek?.tasks?.[0] || "Complete milestone requirements.";
 
   // Score renderer helper
   const renderScore = (score: number | null | undefined, title: string) => {
@@ -67,7 +88,7 @@ export default function DashboardPage() {
       case "ATS Score":
         return "/dashboard/resume";
       case "Career Match Score":
-        return "/dashboard/career-match";
+        return "/dashboard/career-recommendations";
       case "Interview Readiness":
         return "/dashboard/interview";
       case "Skill Gap Score":
@@ -259,6 +280,89 @@ export default function DashboardPage() {
             </div>
 
           </div>
+
+          {/* New Section: Roadmap Tracking Integration Card */}
+          {activeRoadmap ? (
+            <div className="glass-panel p-6 rounded-xl border border-border space-y-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/50 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                    <Map className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-base">Roadmap Progress: {activeRoadmap.target_career}</h3>
+                    <p className="text-xs text-muted-foreground">Target Completion: {new Date(activeRoadmap.estimated_completion).toLocaleDateString()}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded bg-amber-500/10 text-amber-500 text-xs font-bold">
+                    <Flame className="h-3.5 w-3.5 fill-amber-500" />
+                    <span>5 Day Streak</span>
+                  </div>
+                  <Link
+                    href="/dashboard/roadmap"
+                    className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                  >
+                    Open Workspace <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground">Total Completion</span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-extrabold">{avgProgress}%</span>
+                    <span className="text-xs text-muted-foreground">Syllabus</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden mt-1.5">
+                    <div className="h-full bg-primary" style={{ width: `${avgProgress}%` }} />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground">Current Milestone</span>
+                  {currentMilestone ? (
+                    <div>
+                      <h4 className="text-xs font-bold text-foreground truncate">{currentMilestone.title}</h4>
+                      <p className="text-[11px] text-muted-foreground truncate">{currentMilestone.description}</p>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">No active milestone.</span>
+                  )}
+                </div>
+
+                <div className="space-y-1 md:col-span-2">
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground block mb-0.5">Next Recommended Action</span>
+                  <div className="flex items-start gap-2 bg-muted/20 border border-border/40 p-2.5 rounded-lg">
+                    <PlayCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <span className="text-xs font-semibold text-foreground block">Study Task:</span>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed mt-0.5">{nextTask}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="glass-panel p-6 rounded-xl border border-border flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="space-y-1 text-left">
+                <h3 className="font-bold text-md flex items-center gap-2">
+                  <Map className="h-4 w-4 text-muted-foreground" />
+                  No Active Study Roadmap
+                </h3>
+                <p className="text-xs text-muted-foreground max-w-xl">
+                  Unlock custom step-by-step weekly study plans and project goals by scanning your profile gaps.
+                </p>
+              </div>
+              <Link
+                href="/dashboard/roadmap"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-xs font-bold rounded-lg hover:bg-primary/95 transition-colors shrink-0"
+              >
+                Assemble Study Path
+              </Link>
+            </div>
+          )}
 
           {/* Widget 6: Recent Activity & Workspace Setup Callout */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
