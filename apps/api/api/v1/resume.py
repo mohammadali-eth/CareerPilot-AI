@@ -51,7 +51,7 @@ async def upload_resume(
         )
         
         return {
-            "resume": ResumeResponse.from_attributes(resume_obj),
+            "resume": ResumeResponse.model_validate(resume_obj),
             "latest_score": score_obj,
             "latest_ats_report": ats_obj
         }

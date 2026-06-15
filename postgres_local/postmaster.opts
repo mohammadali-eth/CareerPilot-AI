@@ -1,0 +1,1 @@
+/usr/lib/postgresql/16/bin/postgres "-D" "/media/mohammad-ali/Ali/Clients/CareerPilot AI/postgres_local" "-p" "5434" "-h" "127.0.0.1" "-k" "/media/mohammad-ali/Ali/Clients/CareerPilot AI/postgres_local"

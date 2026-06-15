@@ -36,7 +36,3 @@ class Base(DeclarativeBase):
         nullable=False
     )
 
-# Import all models to ensure they are registered on Base.metadata
-from models.user import User, Profile, AuthToken # noqa
-from models.resume import Resume, ResumeScore, ATSReport # noqa
-

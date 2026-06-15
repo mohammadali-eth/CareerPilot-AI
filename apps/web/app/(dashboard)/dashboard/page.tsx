@@ -28,7 +28,7 @@ export default function DashboardPage() {
   const userName =
     user?.profile?.first_name && user?.profile?.last_name
       ? `${user.profile.first_name}`
-      : user?.email.split("@")[0] || "User";
+      : user?.email?.split("@")[0] || "User";
 
   // Score renderer helper
   const renderScore = (score: number | null | undefined, title: string) => {

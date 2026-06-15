@@ -29,7 +29,7 @@ interface SidebarItem {
 const navigationItems: SidebarItem[] = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Resume Analyzer", href: "/dashboard/resume", icon: FileText },
-  { name: "Career Match", href: "/dashboard/career-match", icon: Briefcase },
+  { name: "Career Match", href: "/dashboard/career-recommendations", icon: Briefcase },
   { name: "Skill Gap", href: "/dashboard/skill-gap", icon: TrendingUp },
   { name: "Roadmap", href: "/dashboard/roadmap", icon: Map },
   { name: "Interview Simulator", href: "/dashboard/interview", icon: MessageSquare },

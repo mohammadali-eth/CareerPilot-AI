@@ -13,6 +13,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from core.config import settings
 from database.base import Base
+# Import all models to ensure they are registered on Base.metadata
+from models.user import User, Profile, AuthToken # noqa
+from models.resume import Resume, ResumeScore, ATSReport # noqa
+from models.career import CareerRecommendation, CareerMatch # noqa
 
 # Alembic Config object representing the INI values
 config = context.config
