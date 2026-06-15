@@ -41,19 +41,19 @@ export default function AuditLogViewer() {
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between border-b border-border pb-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Security Audit Trail</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h1 className="text-3xl font-extrabold tracking-tight">Security Audit Trail</h1>
+          <p className="text-xs text-muted-foreground mt-1">
             Browse platform operations logging, admin deactivations, authorization privilege updates, and API security events.
           </p>
         </div>
         <button
           onClick={() => fetchLogs(true)}
           disabled={refreshing}
-          className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg bg-card/60 hover:bg-card border border-border text-foreground transition-all disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded border border-border bg-card hover:bg-neutral-50 dark:hover:bg-neutral-900 text-foreground transition-all disabled:opacity-50"
         >
           <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
           Refresh Trails
@@ -68,7 +68,7 @@ export default function AuditLogViewer() {
             setActionType(e.target.value);
             setPage(1);
           }}
-          className="px-3 py-2 text-xs rounded-lg border border-border bg-card/40 focus:outline-none"
+          className="px-3 py-2 text-xs rounded border border-border bg-card text-foreground focus:outline-none focus:ring-1 focus:ring-foreground"
         >
           <option value="">All Event Types</option>
           <option value="USER_SUSPENDED">USER_SUSPENDED</option>
@@ -82,20 +82,21 @@ export default function AuditLogViewer() {
       </div>
 
       {/* Logs List Container */}
-      <div className="rounded-xl border border-border bg-card/30 backdrop-blur-md overflow-hidden">
+      <div className="rounded border border-border bg-card overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-sm text-muted-foreground animate-pulse">
-            Querying security log databases...
+          <div className="p-8 text-center text-xs font-bold uppercase tracking-wider text-muted-foreground animate-pulse flex items-center justify-center gap-1.5">
+            <RefreshCw className="h-4 w-4 animate-spin" />
+            <span>Querying security log databases...</span>
           </div>
         ) : logs.length === 0 ? (
-          <div className="p-8 text-center text-sm text-muted-foreground">
+          <div className="p-8 text-center text-xs text-muted-foreground">
             No audited security actions matching current criteria found.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-border bg-muted/20 text-xs font-semibold text-muted-foreground uppercase">
+                <tr className="border-b border-border bg-neutral-50 dark:bg-neutral-900 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                   <th className="p-4">Timestamp</th>
                   <th className="p-4">Event</th>
                   <th className="p-4">Description</th>
@@ -105,11 +106,11 @@ export default function AuditLogViewer() {
               </thead>
               <tbody className="divide-y divide-border text-xs leading-relaxed">
                 {logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-muted/10 transition-colors">
+                  <tr key={log.id} className="hover:bg-neutral-50 dark:hover:bg-neutral-950/40 transition-colors">
                     <td className="p-4 whitespace-nowrap text-muted-foreground font-mono">
                       {new Date(log.created_at).toLocaleString()}
                     </td>
-                    <td className="p-4 whitespace-nowrap font-bold text-indigo-400">
+                    <td className="p-4 whitespace-nowrap font-bold text-foreground uppercase tracking-wider">
                       {log.action_type}
                     </td>
                     <td className="p-4 max-w-sm truncate text-foreground/80" title={log.description}>
@@ -128,7 +129,7 @@ export default function AuditLogViewer() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between p-4 border-t border-border bg-muted/10 text-xs">
+              <div className="flex items-center justify-between p-4 border-t border-border bg-neutral-50 dark:bg-neutral-950 text-xs">
                 <span className="text-muted-foreground">
                   Showing Page {page} of {totalPages} ({total} logged entries)
                 </span>
@@ -136,14 +137,14 @@ export default function AuditLogViewer() {
                   <button
                     onClick={() => setPage((p) => Math.max(p - 1, 1))}
                     disabled={page === 1}
-                    className="p-1.5 rounded-md hover:bg-muted disabled:opacity-50 transition-colors"
+                    className="p-1.5 rounded border border-border bg-card text-foreground hover:bg-neutral-100 disabled:opacity-50 transition-colors"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
                     disabled={page === totalPages}
-                    className="p-1.5 rounded-md hover:bg-muted disabled:opacity-50 transition-colors"
+                    className="p-1.5 rounded border border-border bg-card text-foreground hover:bg-neutral-100 disabled:opacity-50 transition-colors"
                   >
                     <ChevronRight className="h-4 w-4" />
                   </button>

@@ -17,6 +17,8 @@ import {
   X,
   Sparkles,
   Shield,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useAuthStore } from "../../store/auth";
 import { useLogout } from "../../hooks/use-auth";
@@ -62,6 +64,17 @@ export default function DashboardLayout({
   const logoutMutation = useLogout();
   const { user, accessToken, isInitialized } = useAuthStore();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Read sidebar collapsed preference on load
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("sidebar-collapsed");
+      if (saved === "true") {
+        setIsCollapsed(true);
+      }
+    }
+  }, []);
 
   // Protected route guard
   useEffect(() => {
@@ -69,6 +82,14 @@ export default function DashboardLayout({
       router.push("/login");
     }
   }, [accessToken, isInitialized, router]);
+
+  const toggleCollapse = () => {
+    const nextState = !isCollapsed;
+    setIsCollapsed(nextState);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("sidebar-collapsed", String(nextState));
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -82,7 +103,7 @@ export default function DashboardLayout({
   if (!isInitialized || !accessToken || !user) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        <div className="animate-spin rounded-full h-6 w-6 border-2 border-foreground border-t-transparent" />
       </div>
     );
   }
@@ -105,22 +126,45 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* 1. Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 border-r border-border bg-card/50 backdrop-blur-md">
+    <div className="min-h-screen bg-background flex bg-grid-pattern">
+      {/* 1. Desktop Collapsible Sidebar */}
+      <aside
+        className={`hidden md:flex flex-col border-r border-border bg-card transition-all duration-200 shrink-0 ${
+          isCollapsed ? "w-16" : "w-64"
+        }`}
+      >
         {/* Brand Header */}
-        <div className="h-16 flex items-center px-6 border-b border-border">
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-2.5 font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+        <div className="h-16 flex items-center justify-between px-4 border-b border-border">
+          {!isCollapsed && (
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 font-bold text-sm uppercase tracking-wider text-foreground"
+            >
+              <Sparkles className="h-4 w-4 text-foreground shrink-0" />
+              CareerPilot
+            </Link>
+          )}
+          {isCollapsed && (
+            <Link href="/dashboard" className="mx-auto text-foreground">
+              <Sparkles className="h-5 w-5" />
+            </Link>
+          )}
+
+          <button
+            onClick={toggleCollapse}
+            className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors shrink-0"
+            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            <Sparkles className="h-5 w-5 text-indigo-500" />
-            CareerPilot AI
-          </Link>
+            {isCollapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <ChevronLeft className="h-4 w-4" />
+            )}
+          </button>
         </div>
 
         {/* Sidebar Links */}
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-2.5 py-6 space-y-1.5 overflow-y-auto">
           {displayItems.map((item) => {
             const isActive =
               pathname === item.href || pathname?.startsWith(item.href + "/");
@@ -129,59 +173,73 @@ export default function DashboardLayout({
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-150 ${
+                title={isCollapsed ? item.name : undefined}
+                className={`flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded transition-all duration-150 ${
                   isActive
-                    ? "bg-primary/10 text-primary border border-primary/10"
-                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground border border-transparent"
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
                 <Icon className="h-4 w-4 shrink-0" />
-                {item.name}
+                {!isCollapsed && <span>{item.name}</span>}
               </Link>
             );
           })}
         </nav>
 
         {/* User Footer Profile */}
-        <div className="p-4 border-t border-border bg-muted/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-xs font-bold text-indigo-400">
+        <div className="p-3 border-t border-border bg-muted/30">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="h-8 w-8 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-border flex items-center justify-center text-xs font-bold text-foreground shrink-0">
                 {userInitials}
               </div>
-              <div className="truncate max-w-[120px]">
-                <p className="text-sm font-semibold truncate leading-tight">
-                  {userName}
-                </p>
-                <span className="text-xs text-muted-foreground capitalize leading-tight">
-                  {user.role}
-                </span>
-              </div>
+              {!isCollapsed && (
+                <div className="truncate min-w-0">
+                  <p className="text-xs font-bold truncate leading-tight">
+                    {userName}
+                  </p>
+                  <span className="text-[10px] text-muted-foreground capitalize leading-tight">
+                    {user.role}
+                  </span>
+                </div>
+              )}
             </div>
+            {!isCollapsed && (
+              <button
+                onClick={handleLogout}
+                title="Sign out"
+                className="p-1.5 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 text-muted-foreground hover:text-foreground transition-colors shrink-0"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+          {isCollapsed && (
             <button
               onClick={handleLogout}
               title="Sign out"
-              className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-destructive transition-colors"
+              className="mt-3 w-full p-1.5 flex items-center justify-center rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 text-muted-foreground hover:text-foreground transition-colors"
             >
               <LogOut className="h-4 w-4" />
             </button>
-          </div>
+          )}
         </div>
       </aside>
 
       {/* 2. Mobile Nav Header */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-        <header className="md:hidden h-16 border-b border-border bg-card/50 backdrop-blur-md flex items-center justify-between px-4 z-30">
+        <header className="md:hidden h-16 border-b border-border bg-card flex items-center justify-between px-4 z-30">
           <Link
             href="/dashboard"
-            className="flex items-center gap-2 font-bold text-md tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+            className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-foreground"
           >
-            <Sparkles className="h-4 w-4 text-indigo-500" />
-            CareerPilot AI
+            <Sparkles className="h-4 w-4 text-foreground" />
+            CareerPilot
           </Link>
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="p-2 rounded-lg hover:bg-muted text-muted-foreground focus:outline-none"
+            className="p-2 rounded hover:bg-muted text-muted-foreground focus:outline-none"
           >
             {isMobileOpen ? (
               <X className="h-5 w-5" />
@@ -198,7 +256,7 @@ export default function DashboardLayout({
             onClick={() => setIsMobileOpen(false)}
           >
             <aside
-              className="fixed top-16 bottom-0 left-0 w-64 border-r border-border bg-card flex flex-col p-4 space-y-1 shadow-2xl"
+              className="fixed top-16 bottom-0 left-0 w-64 border-r border-border bg-card flex flex-col p-4 space-y-1.5 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {displayItems.map((item) => {
@@ -211,25 +269,25 @@ export default function DashboardLayout({
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    className={`flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded transition-colors ${
                       isActive
-                        ? "bg-primary/10 text-primary border border-primary/10"
-                        : "text-muted-foreground hover:bg-muted/50"
+                        ? "bg-foreground text-background"
+                        : "text-muted-foreground hover:bg-muted"
                     }`}
                   >
                     <Icon className="h-4 w-4 shrink-0" />
-                    {item.name}
+                    <span>{item.name}</span>
                   </Link>
                 );
               })}
 
               <div className="pt-4 mt-auto border-t border-border flex flex-col gap-2">
                 <div className="flex items-center gap-3 px-3 py-2">
-                  <div className="h-8 w-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-xs font-bold text-indigo-400">
+                  <div className="h-8 w-8 rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-xs font-bold text-foreground">
                     {userInitials}
                   </div>
                   <div>
-                    <p className="text-xs font-semibold truncate max-w-[120px]">
+                    <p className="text-xs font-bold truncate max-w-[120px]">
                       {userName}
                     </p>
                     <span className="text-[10px] text-muted-foreground capitalize">
@@ -239,7 +297,7 @@ export default function DashboardLayout({
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                  className="w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted rounded transition-colors"
                 >
                   <LogOut className="h-4 w-4" />
                   Sign out

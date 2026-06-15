@@ -123,3 +123,16 @@ class TokenRepository(BaseRepository[AuthToken]):
             await self.db.commit()
             return True
         return False
+
+    async def revoke_all_user_tokens(self, user_id: UUID) -> None:
+        """
+        Mark all refresh tokens for a specific user as revoked (Security fail-safe).
+        """
+        from sqlalchemy import update
+        query = (
+            update(AuthToken)
+            .where(AuthToken.user_id == user_id)
+            .values(is_revoked=True)
+        )
+        await self.db.execute(query)
+        await self.db.commit()

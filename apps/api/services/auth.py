@@ -128,6 +128,10 @@ class AuthService:
         # Check token status in database
         token_record = await self.token_repo.get_by_jti(jti)
         if not token_record or token_record.is_revoked or token_record.expires_at.replace(tzinfo=timezone.utc) < datetime.now(timezone.utc):
+            if token_record and token_record.is_revoked:
+                # Security: Refresh Token Reuse detected! Revoke all tokens for this user!
+                logger.warning(f"CRITICAL: Refresh Token Reuse detected for JTI {jti}. Revoking all sessions for user {user_id}!")
+                await self.token_repo.revoke_all_user_tokens(UUID(user_id))
             logger.warning(f"Refresh attempt using revoked or expired token: JTI {jti}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

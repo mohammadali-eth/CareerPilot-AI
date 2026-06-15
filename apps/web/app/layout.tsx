@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Inter } from "next/font/google";
 import { RootProvider } from "../components/providers/root-provider";
 import "./globals.css";
 
-const outfit = Outfit({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -22,14 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${outfit.variable} font-sans min-h-screen bg-background text-foreground antialiased`}
+        className={`${inter.variable} font-sans min-h-screen bg-background text-foreground antialiased`}
       >
-        <div className="relative min-h-screen flex flex-col overflow-hidden bg-dot-pattern">
-          {/* Subtle Ambient Background Gradients */}
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-subtle" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-subtle [animation-delay:1s]" />
-
-          <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <div className="relative min-h-screen flex flex-col overflow-hidden bg-grid-pattern">
+          {/* Strict Monochrome Clean Background (No colored gradients) */}
+          <main className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
             <RootProvider>{children}</RootProvider>
           </main>
         </div>

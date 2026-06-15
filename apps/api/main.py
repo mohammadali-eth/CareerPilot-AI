@@ -6,6 +6,9 @@ import sentry_sdk
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 
 from core.config import settings
+from utils.logging import configure_structured_logging
+from core.middleware import TraceMiddleware, RateLimitMiddleware, MetricsMiddleware, InputSanitizationMiddleware
+from utils.redis import redis_manager
 
 # Configure Sentry SDK if DSN is provided
 if settings.SENTRY_DSN:
@@ -16,44 +19,8 @@ if settings.SENTRY_DSN:
         environment=settings.ENVIRONMENT,
     )
 
-class ColoredFormatter(logging.Formatter):
-    COLORS = {
-        "DEBUG": "\033[94m",      # Blue
-        "INFO": "\033[92m",       # Green
-        "WARNING": "\033[93m",    # Yellow
-        "ERROR": "\033[91m",      # Red
-        "CRITICAL": "\033[95m",   # Magenta
-    }
-    RESET = "\033[0m"
-
-    def format(self, record):
-        orig_levelname = record.levelname
-        orig_msg = record.msg
-        
-        color = self.COLORS.get(orig_levelname, self.RESET)
-        record.levelname = f"{color}{orig_levelname}{self.RESET}"
-        
-        # Color SQL queries with Cyan
-        if isinstance(record.msg, str) and any(kw in record.msg for kw in ["SELECT ", "INSERT ", "UPDATE ", "DELETE ", "COMMIT"]):
-            record.msg = f"\033[36m{record.msg}\033[0m"
-            
-        formatted = super().format(record)
-        
-        record.levelname = orig_levelname
-        record.msg = orig_msg
-        return formatted
-
-# Configure console logging with colors
-handler = logging.StreamHandler()
-handler.setFormatter(ColoredFormatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S"))
-
-for logger_name in ["careerpilot", "sqlalchemy.engine", "uvicorn.access", "uvicorn.error"]:
-    log = logging.getLogger(logger_name)
-    log.handlers = []
-    log.addHandler(handler)
-    log.propagate = False
-    log.setLevel(logging.INFO)
-
+# Configure structured JSON logging
+configure_structured_logging()
 logger = logging.getLogger("careerpilot")
 
 # Initialize FastAPI App with metadata
@@ -66,7 +33,13 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json" if settings.ENVIRONMENT != "production" else None
 )
 
-# Set up CORS Middleware
+# Register Security & Observability Middleware chain
+app.add_middleware(InputSanitizationMiddleware)
+app.add_middleware(RateLimitMiddleware)
+app.add_middleware(MetricsMiddleware)
+app.add_middleware(TraceMiddleware)
+
+# Set up CORS Middleware (Must be registered last to guarantee CORS headers on all middleware short-circuit/error responses)
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
@@ -131,7 +104,14 @@ async def startup_event():
         logger.info("Database successfully connected.")
     except Exception as e:
         logger.error(f"Database connection failed: {e}")
+        
+    try:
+        redis_manager.connect()
+        logger.info("Redis cache registry pool connected successfully.")
+    except Exception as e:
+        logger.error(f"Redis cache pool connection failed: {e}")
 
 @app.on_event("shutdown")
 async def shutdown_event():
     logger.info(f"Shutting down {settings.PROJECT_NAME}...")
+    await redis_manager.disconnect()

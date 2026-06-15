@@ -112,13 +112,13 @@ export default function ResumePage() {
   const latestATSReport = activeResume?.ats_reports?.[0] || null;
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-12">
+    <div className="max-w-6xl mx-auto space-y-8 pb-12 animate-fade-in">
       {/* Title Header */}
       <div className="border-b border-border pb-6">
         <h1 className="text-3xl font-extrabold tracking-tight">
           Resume Intelligence
         </h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           Upload resumes to audit keywords, run semantic classifications, and
           score your ATS compliance.
         </p>
@@ -133,31 +133,30 @@ export default function ResumePage() {
             onDragOver={handleDrag}
             onDragLeave={handleDrag}
             onDrop={handleDrop}
-            className={`glass-panel p-6 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center text-center transition-all min-h-[200px] ${
+            className={`glass-panel p-6 rounded border-2 border-dashed flex flex-col items-center justify-center text-center transition-colors min-h-[220px] ${
               dragActive
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-muted-foreground/25"
+                ? "border-foreground bg-neutral-50 dark:bg-neutral-900"
+                : "border-border hover:border-neutral-400 dark:hover:border-neutral-800"
             }`}
           >
             {uploadMutation.isPending ? (
               <div className="flex flex-col items-center justify-center text-center space-y-3">
-                <RefreshCw className="h-8 w-8 text-primary animate-spin" />
-                <p className="text-xs font-semibold">
-                  AI Extraction Engine Running...
+                <RefreshCw className="h-6 w-6 text-foreground animate-spin" />
+                <p className="text-xs font-bold uppercase tracking-wider">
+                  Analyzing CV...
                 </p>
-                <p className="text-[10px] text-muted-foreground max-w-[180px] leading-relaxed">
-                  Parsing layout structures, applying spaCy schemas, and grading
-                  ATS relevance vectors.
+                <p className="text-[10px] text-muted-foreground max-w-[200px] leading-relaxed">
+                  Parsing layout structures, applying semantic schemas, and grading ATS relevance vectors.
                 </p>
               </div>
             ) : (
               <>
-                <div className="h-10 w-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500 mb-3">
-                  <Upload className="h-5 w-5" />
+                <div className="h-9 w-9 rounded border border-border flex items-center justify-center text-foreground mb-3 bg-neutral-50 dark:bg-neutral-900">
+                  <Upload className="h-4.5 w-4.5" />
                 </div>
-                <h3 className="text-xs font-bold">Upload CV / Resume</h3>
-                <p className="text-[10px] text-muted-foreground mt-1 max-w-[180px] leading-relaxed">
-                  Drag and drop PDF or DOCX file. Maximum size 5MB.
+                <h3 className="text-xs font-bold uppercase tracking-wider">Upload CV / Resume</h3>
+                <p className="text-[10px] text-muted-foreground mt-1.5 max-w-[180px] leading-relaxed">
+                  Drag and drop PDF or DOCX file. Max size 5MB.
                 </p>
                 <input
                   type="file"
@@ -168,7 +167,7 @@ export default function ResumePage() {
                 />
                 <label
                   htmlFor="resume-file"
-                  className="mt-4 inline-flex items-center px-3 py-1.5 bg-foreground text-background rounded-lg hover:bg-foreground/90 text-xs font-semibold cursor-pointer transition-all"
+                  className="mt-4 inline-flex items-center px-4 py-2 bg-foreground text-background rounded hover:bg-neutral-800 dark:hover:bg-neutral-200 text-[10px] font-bold uppercase tracking-wider cursor-pointer transition-colors"
                 >
                   Select File
                 </label>
@@ -177,10 +176,9 @@ export default function ResumePage() {
           </div>
 
           {/* History Lists */}
-          <div className="glass-panel p-6 rounded-xl border border-border space-y-4">
-            <h3 className="font-bold text-sm flex items-center gap-1.5">
-              <Calendar className="h-4 w-4 text-muted-foreground" /> Historical
-              Uploads
+          <div className="glass-panel p-6 rounded border border-border space-y-4">
+            <h3 className="font-bold text-xs flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground">
+              <Calendar className="h-4 w-4" /> Historical Uploads
             </h3>
 
             {isListLoading ? (
@@ -188,19 +186,19 @@ export default function ResumePage() {
                 {[...Array(2)].map((_, i) => (
                   <div
                     key={i}
-                    className="h-12 bg-muted rounded-lg animate-pulse"
+                    className="h-12 bg-neutral-100 dark:bg-neutral-900 rounded animate-pulse"
                   />
                 ))}
               </div>
             ) : isListError ? (
-              <div className="flex flex-col items-center justify-center text-center p-4 border border-destructive/10 bg-destructive/5 rounded-lg">
-                <AlertTriangle className="h-5 w-5 text-destructive mb-1" />
-                <span className="text-[11px] font-semibold">
+              <div className="flex flex-col items-center justify-center text-center p-4 border border-border bg-neutral-50 dark:bg-neutral-950 rounded">
+                <AlertTriangle className="h-4 w-4 text-foreground mb-1.5" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">
                   Failed to load history
                 </span>
                 <button
                   onClick={() => refetch()}
-                  className="text-[10px] text-primary hover:underline mt-1"
+                  className="text-[10px] font-bold text-foreground hover:underline mt-1"
                 >
                   Try Again
                 </button>
@@ -219,21 +217,21 @@ export default function ResumePage() {
                     <div
                       key={resume.id}
                       onClick={() => setSelectedResumeId(resume.id)}
-                      className={`flex items-center justify-between p-3 rounded-lg border text-left cursor-pointer transition-all ${
+                      className={`flex items-center justify-between p-3 rounded border text-left cursor-pointer transition-colors ${
                         isActive
-                          ? "bg-primary/5 border-primary/40 shadow-sm"
-                          : "border-border hover:bg-muted/40"
+                          ? "bg-neutral-100 dark:bg-neutral-900 border-foreground/40"
+                          : "border-border hover:bg-neutral-50 dark:hover:bg-neutral-950"
                       }`}
                     >
-                      <div className="flex items-center gap-2 min-w-0">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         <FileText
-                          className={`h-4 w-4 shrink-0 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                          className={`h-4 w-4 shrink-0 ${isActive ? "text-foreground" : "text-muted-foreground"}`}
                         />
-                        <div className="truncate">
-                          <p className="text-xs font-semibold truncate leading-tight">
+                        <div className="truncate min-w-0">
+                          <p className="text-xs font-bold truncate leading-tight">
                             {resume.filename}
                           </p>
-                          <span className="text-[10px] text-muted-foreground font-mono">
+                          <span className="text-[9px] text-muted-foreground font-mono">
                             {new Date(resume.created_at).toLocaleDateString()}
                           </span>
                         </div>
@@ -242,12 +240,12 @@ export default function ResumePage() {
                       <div className="flex items-center gap-2 shrink-0">
                         {score !== null && (
                           <span
-                            className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded ${
+                            className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded border ${
                               score >= 80
-                                ? "bg-emerald-500/10 text-emerald-500"
+                                ? "bg-black text-white dark:bg-white dark:text-black border-foreground"
                                 : score >= 60
-                                  ? "bg-amber-500/10 text-amber-500"
-                                  : "bg-rose-500/10 text-rose-500"
+                                  ? "bg-neutral-100 border-neutral-300 text-neutral-800 dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-200"
+                                  : "bg-neutral-50 border-neutral-200 text-neutral-400"
                             }`}
                           >
                             {score}%
@@ -255,7 +253,7 @@ export default function ResumePage() {
                         )}
                         <button
                           onClick={(e) => handleDelete(resume.id, e)}
-                          className="p-1 hover:text-destructive hover:bg-destructive/10 rounded transition-colors text-muted-foreground"
+                          className="p-1 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded transition-colors text-muted-foreground hover:text-foreground"
                           title="Delete Resume"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -270,21 +268,21 @@ export default function ResumePage() {
         </div>
 
         {/* Right Hand: Active Analysis Report & Score Cards */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-6">
           {activeResume ? (
             <div className="space-y-6">
               {/* Top Row: Score Grades */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {/* ATS Score Card */}
-                <div className="glass-panel p-5 rounded-xl border border-border flex flex-col justify-between">
+                <div className="glass-panel p-5 rounded border border-border flex flex-col justify-between">
                   <div className="flex items-center justify-between text-muted-foreground">
-                    <span className="text-[10px] font-bold tracking-wide uppercase">
+                    <span className="text-[9px] font-bold tracking-wider uppercase">
                       ATS Score
                     </span>
-                    <TrendingUp className="h-4 w-4 text-emerald-500" />
+                    <TrendingUp className="h-4 w-4 text-foreground" />
                   </div>
                   <div className="mt-3">
-                    <span className="text-3xl font-extrabold">
+                    <span className="text-2xl font-black">
                       {latestATSReport?.ats_score ?? "N/A"}%
                     </span>
                     <p className="text-[10px] text-muted-foreground mt-1">
@@ -294,15 +292,15 @@ export default function ResumePage() {
                 </div>
 
                 {/* Resume Score Card */}
-                <div className="glass-panel p-5 rounded-xl border border-border flex flex-col justify-between">
+                <div className="glass-panel p-5 rounded border border-border flex flex-col justify-between">
                   <div className="flex items-center justify-between text-muted-foreground">
-                    <span className="text-[10px] font-bold tracking-wide uppercase">
+                    <span className="text-[9px] font-bold tracking-wider uppercase">
                       Resume Score
                     </span>
-                    <FileText className="h-4 w-4 text-purple-500" />
+                    <FileText className="h-4 w-4 text-foreground" />
                   </div>
                   <div className="mt-3">
-                    <span className="text-3xl font-extrabold">
+                    <span className="text-2xl font-black">
                       {latestScore?.overall_score ?? "N/A"}%
                     </span>
                     <p className="text-[10px] text-muted-foreground mt-1">
@@ -312,22 +310,22 @@ export default function ResumePage() {
                 </div>
 
                 {/* Submetrics Details Card */}
-                <div className="glass-panel p-5 rounded-xl border border-border flex flex-col justify-between">
+                <div className="glass-panel p-5 rounded border border-border flex flex-col justify-between">
                   <div className="flex items-center justify-between text-muted-foreground">
-                    <span className="text-[10px] font-bold tracking-wide uppercase">
+                    <span className="text-[9px] font-bold tracking-wider uppercase">
                       Breakdowns
                     </span>
-                    <Layers className="h-4 w-4 text-amber-500" />
+                    <Layers className="h-4 w-4 text-foreground" />
                   </div>
-                  <div className="space-y-1 mt-3">
+                  <div className="space-y-1.5 mt-3">
                     <div className="flex justify-between text-[11px]">
-                      <span className="text-muted-foreground">Structure:</span>
+                      <span className="text-muted-foreground font-medium">Structure:</span>
                       <span className="font-bold">
                         {latestScore?.structure_score ?? "N/A"}%
                       </span>
                     </div>
                     <div className="flex justify-between text-[11px]">
-                      <span className="text-muted-foreground">Content:</span>
+                      <span className="text-muted-foreground font-medium">Content:</span>
                       <span className="font-bold">
                         {latestScore?.content_score ?? "N/A"}%
                       </span>
@@ -337,10 +335,9 @@ export default function ResumePage() {
               </div>
 
               {/* Middle Section: Extracted Data with Tab Interfaces */}
-              <div className="glass-panel p-6 rounded-xl border border-border space-y-4">
-                <h3 className="font-bold text-sm flex items-center gap-1.5">
-                  <Sparkles className="h-4.5 w-4.5 text-indigo-500" /> Extracted
-                  Resume Details
+              <div className="glass-panel p-6 rounded border border-border space-y-4">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <Sparkles className="h-4 w-4" /> Extracted Resume Details
                 </h3>
 
                 {/* Tab select bar */}
@@ -357,9 +354,9 @@ export default function ResumePage() {
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className={`px-3 py-1.5 text-xs font-semibold border-b-2 capitalize transition-colors whitespace-nowrap ${
+                      className={`px-3 py-1.5 text-xs font-bold border-b-2 capitalize transition-colors whitespace-nowrap ${
                         activeTab === tab
-                          ? "border-primary text-foreground"
+                          ? "border-foreground text-foreground"
                           : "border-transparent text-muted-foreground hover:text-foreground"
                       }`}
                     >
@@ -371,14 +368,14 @@ export default function ResumePage() {
                 {/* Tab content areas */}
                 <div className="pt-2 min-h-[160px]">
                   {activeTab === "skills" && (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 animate-fade-in">
                       {activeResume.extracted_data?.skills &&
                       activeResume.extracted_data.skills.length > 0 ? (
                         activeResume.extracted_data.skills.map(
                           (skill, index) => (
                             <span
                               key={index}
-                              className="px-2.5 py-1 bg-secondary text-secondary-foreground rounded-lg text-xs font-semibold border border-border"
+                              className="px-2.5 py-1 bg-neutral-100 dark:bg-neutral-900 text-foreground rounded text-[11px] font-semibold border border-border"
                             >
                               {skill}
                             </span>
@@ -393,16 +390,16 @@ export default function ResumePage() {
                   )}
 
                   {activeTab === "experience" && (
-                    <ul className="space-y-3">
+                    <ul className="space-y-3 animate-fade-in">
                       {activeResume.extracted_data?.experience &&
                       activeResume.extracted_data.experience.length > 0 ? (
                         activeResume.extracted_data.experience.map(
                           (exp, index) => (
                             <li
                               key={index}
-                              className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed"
+                              className="flex items-start gap-2.5 text-xs text-muted-foreground leading-relaxed"
                             >
-                              <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                              <span className="h-1.5 w-1.5 rounded-full bg-foreground mt-2 shrink-0" />
                               <span>{exp}</span>
                             </li>
                           ),
@@ -416,16 +413,16 @@ export default function ResumePage() {
                   )}
 
                   {activeTab === "education" && (
-                    <ul className="space-y-3">
+                    <ul className="space-y-3 animate-fade-in">
                       {activeResume.extracted_data?.education &&
                       activeResume.extracted_data.education.length > 0 ? (
                         activeResume.extracted_data.education.map(
                           (edu, index) => (
                             <li
                               key={index}
-                              className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed"
+                              className="flex items-start gap-2.5 text-xs text-muted-foreground leading-relaxed"
                             >
-                              <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                              <span className="h-1.5 w-1.5 rounded-full bg-foreground mt-2 shrink-0" />
                               <span>{edu}</span>
                             </li>
                           ),
@@ -439,16 +436,16 @@ export default function ResumePage() {
                   )}
 
                   {activeTab === "projects" && (
-                    <ul className="space-y-3">
+                    <ul className="space-y-3 animate-fade-in">
                       {activeResume.extracted_data?.projects &&
                       activeResume.extracted_data.projects.length > 0 ? (
                         activeResume.extracted_data.projects.map(
                           (proj, index) => (
                             <li
                               key={index}
-                              className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed"
+                              className="flex items-start gap-2.5 text-xs text-muted-foreground leading-relaxed"
                             >
-                              <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                              <span className="h-1.5 w-1.5 rounded-full bg-foreground mt-2 shrink-0" />
                               <span>{proj}</span>
                             </li>
                           ),
@@ -462,16 +459,16 @@ export default function ResumePage() {
                   )}
 
                   {activeTab === "certifications" && (
-                    <ul className="space-y-3">
+                    <ul className="space-y-3 animate-fade-in">
                       {activeResume.extracted_data?.certifications &&
                       activeResume.extracted_data.certifications.length > 0 ? (
                         activeResume.extracted_data.certifications.map(
                           (cert, index) => (
                             <li
                               key={index}
-                              className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed"
+                              className="flex items-start gap-2.5 text-xs text-muted-foreground leading-relaxed"
                             >
-                              <span className="h-1.5 w-1.5 rounded-full bg-primary mt-2 shrink-0" />
+                              <span className="h-1.5 w-1.5 rounded-full bg-foreground mt-2 shrink-0" />
                               <span>{cert}</span>
                             </li>
                           ),
@@ -489,8 +486,8 @@ export default function ResumePage() {
               {/* Lower Section: Missing Keywords & Suggestions */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Missing Keywords Column */}
-                <div className="glass-panel p-6 rounded-xl border border-border space-y-4">
-                  <h3 className="font-bold text-sm text-destructive flex items-center gap-1.5">
+                <div className="glass-panel p-6 rounded border border-border space-y-4">
+                  <h3 className="font-bold text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                     <AlertTriangle className="h-4 w-4" /> Missing Keywords
                   </h3>
                   <p className="text-[10px] text-muted-foreground leading-relaxed">
@@ -503,23 +500,22 @@ export default function ResumePage() {
                       latestATSReport.missing_keywords.map((kw, i) => (
                         <span
                           key={i}
-                          className="px-2 py-0.5 bg-rose-500/5 text-rose-500 border border-rose-500/10 rounded text-[10px] font-bold capitalize"
+                          className="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 border border-border rounded text-[10px] font-bold capitalize text-foreground"
                         >
                           {kw}
                         </span>
                       ))
                     ) : (
-                      <div className="flex items-center gap-1.5 text-xs text-emerald-500 font-semibold">
-                        <CheckCircle className="h-4 w-4" /> No missing keywords
-                        detected!
+                      <div className="flex items-center gap-1.5 text-xs text-foreground font-bold">
+                        <CheckCircle className="h-4 w-4" /> No missing keywords detected!
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Suggestions / Advice Column */}
-                <div className="glass-panel p-6 rounded-xl border border-border space-y-4">
-                  <h3 className="font-bold text-sm text-indigo-500 flex items-center gap-1.5">
+                <div className="glass-panel p-6 rounded border border-border space-y-4">
+                  <h3 className="font-bold text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                     <CheckCircle className="h-4 w-4" /> AI Recommendations
                   </h3>
 
@@ -528,12 +524,12 @@ export default function ResumePage() {
                       latestScore.suggestions.structure.map((item, i) => (
                         <div
                           key={`s-${i}`}
-                          className="p-2 border border-border rounded-lg bg-muted/20"
+                          className="p-2.5 border border-border rounded bg-neutral-50 dark:bg-neutral-950"
                         >
-                          <span className="text-[9px] font-bold uppercase text-primary tracking-wider">
-                            Layout
+                          <span className="text-[9px] font-bold uppercase text-muted-foreground tracking-wider block">
+                            Layout Recommendation
                           </span>
-                          <p className="text-[11px] text-muted-foreground mt-0.5">
+                          <p className="text-[11px] text-foreground mt-1 leading-relaxed">
                             {item}
                           </p>
                         </div>
@@ -543,12 +539,12 @@ export default function ResumePage() {
                       latestScore.suggestions.content.map((item, i) => (
                         <div
                           key={`c-${i}`}
-                          className="p-2 border border-border rounded-lg bg-muted/20"
+                          className="p-2.5 border border-border rounded bg-neutral-50 dark:bg-neutral-950"
                         >
-                          <span className="text-[9px] font-bold uppercase text-purple-500 tracking-wider">
-                            Content
+                          <span className="text-[9px] font-bold uppercase text-muted-foreground tracking-wider block">
+                            Content Optimization
                           </span>
-                          <p className="text-[11px] text-muted-foreground mt-0.5">
+                          <p className="text-[11px] text-foreground mt-1 leading-relaxed">
                             {item}
                           </p>
                         </div>
@@ -557,8 +553,7 @@ export default function ResumePage() {
                     {!latestScore?.suggestions?.structure?.length &&
                       !latestScore?.suggestions?.content?.length && (
                         <p className="text-xs text-muted-foreground">
-                          Your layout and content details are in excellent
-                          shape!
+                          Your layout and content details are in excellent shape!
                         </p>
                       )}
                   </div>
@@ -566,15 +561,14 @@ export default function ResumePage() {
               </div>
             </div>
           ) : (
-            <div className="glass-panel p-12 rounded-xl border border-border flex flex-col items-center justify-center text-center space-y-4 min-h-[400px]">
-              <div className="h-12 w-12 rounded-full bg-indigo-500/5 text-indigo-500 flex items-center justify-center text-xl">
-                ∅
+            <div className="glass-panel p-12 rounded border border-border flex flex-col items-center justify-center text-center space-y-4 min-h-[400px]">
+              <div className="h-10 w-10 rounded border border-border flex items-center justify-center text-muted-foreground">
+                <FileText className="h-5 w-5" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-md font-bold">No Resume Selected</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider">No Resume Selected</h3>
                 <p className="text-xs text-muted-foreground max-w-sm">
-                  Upload a PDF/DOCX file on the left side or click an existing
-                  record to load the analytics metrics board.
+                  Upload a PDF/DOCX file on the left side or click an existing record to load the analytics metrics board.
                 </p>
               </div>
             </div>

@@ -60,24 +60,24 @@ export default function RegisterPage() {
   if (successData) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[75vh] py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-6 glass-panel p-8 rounded-2xl shadow-premium border border-emerald-500/20 text-center">
-          <div className="h-12 w-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto text-2xl">
+        <div className="w-full max-w-md space-y-6 glass-panel p-8 rounded border border-border text-center">
+          <div className="h-10 w-10 rounded-full border border-foreground flex items-center justify-center mx-auto text-sm font-extrabold text-foreground">
             ✓
           </div>
-          <h2 className="text-2xl font-bold">Registration Successful</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-xl font-bold text-foreground">Registration Successful</h2>
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {successData.message ||
               "Account registered successfully. Please verify your email."}
           </p>
 
           {successData.verification_token && (
-            <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-lg text-left text-xs font-mono space-y-2">
-              <p className="text-emerald-400 font-semibold">
+            <div className="p-4 bg-neutral-50 dark:bg-neutral-900 border border-border rounded text-left text-xs font-mono space-y-2">
+              <p className="text-foreground font-bold uppercase tracking-wider text-[10px]">
                 Simulated Verification Link:
               </p>
               <Link
                 href={`/verify-email?token=${successData.verification_token}`}
-                className="text-primary hover:underline break-all block"
+                className="text-foreground hover:underline break-all block font-semibold"
               >
                 {`${window.location.origin}/verify-email?token=${successData.verification_token}`}
               </Link>
@@ -87,9 +87,9 @@ export default function RegisterPage() {
           <div className="pt-4">
             <Link
               href="/login"
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors"
+              className="w-full flex justify-center py-2.5 px-4 rounded text-xs font-bold text-background bg-foreground hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
             >
-              Go to Sign in
+              GO TO SIGN IN
             </Link>
           </div>
         </div>
@@ -99,23 +99,23 @@ export default function RegisterPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[75vh] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl shadow-premium border border-border">
+      <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded border border-border">
         {/* Header */}
         <div className="text-center">
           <Link
             href="/"
-            className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+            className="text-sm font-bold uppercase tracking-widest text-foreground"
           >
-            CareerPilot AI
+            CareerPilot
           </Link>
-          <h2 className="mt-6 text-3xl font-extrabold tracking-tight">
-            Create your account
+          <h2 className="mt-6 text-2xl font-extrabold tracking-tight text-foreground">
+            Create Account
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-xs text-muted-foreground">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-semibold text-primary hover:underline"
+              className="font-bold text-foreground hover:underline"
             >
               Sign in
             </Link>
@@ -124,7 +124,7 @@ export default function RegisterPage() {
 
         {/* Error Messages */}
         {errorMessage && (
-          <div className="p-3 text-sm rounded-lg border border-red-500/20 bg-red-500/5 text-red-500 text-center">
+          <div className="p-3 text-xs rounded border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-900 text-foreground text-center font-medium">
             {errorMessage}
           </div>
         )}
@@ -135,22 +135,20 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="first_name"
-                className="block text-sm font-medium text-foreground"
+                className="block text-xs font-bold uppercase tracking-wider text-foreground"
               >
                 First Name
               </label>
               <input
                 id="first_name"
                 type="text"
-                className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                  errors.first_name
-                    ? "border-destructive focus:ring-destructive/50"
-                    : "border-input"
+                className={`mt-1.5 block w-full px-3 py-2 bg-background border rounded focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all text-xs font-medium ${
+                  errors.first_name ? "border-neutral-800" : "border-input"
                 }`}
                 {...register("first_name")}
               />
               {errors.first_name && (
-                <p className="mt-1 text-xs text-destructive">
+                <p className="mt-1 text-[10px] text-muted-foreground font-semibold">
                   {errors.first_name.message}
                 </p>
               )}
@@ -159,22 +157,20 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="last_name"
-                className="block text-sm font-medium text-foreground"
+                className="block text-xs font-bold uppercase tracking-wider text-foreground"
               >
                 Last Name
               </label>
               <input
                 id="last_name"
                 type="text"
-                className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                  errors.last_name
-                    ? "border-destructive focus:ring-destructive/50"
-                    : "border-input"
+                className={`mt-1.5 block w-full px-3 py-2 bg-background border rounded focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all text-xs font-medium ${
+                  errors.last_name ? "border-neutral-800" : "border-input"
                 }`}
                 {...register("last_name")}
               />
               {errors.last_name && (
-                <p className="mt-1 text-xs text-destructive">
+                <p className="mt-1 text-[10px] text-muted-foreground font-semibold">
                   {errors.last_name.message}
                 </p>
               )}
@@ -184,22 +180,20 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-foreground"
+              className="block text-xs font-bold uppercase tracking-wider text-foreground"
             >
-              Email address
+              Email Address
             </label>
             <input
               id="email"
               type="email"
-              className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                errors.email
-                  ? "border-destructive focus:ring-destructive/50"
-                  : "border-input"
+              className={`mt-1.5 block w-full px-3 py-2 bg-background border rounded focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all text-xs font-medium ${
+                errors.email ? "border-neutral-800" : "border-input"
               }`}
               {...register("email")}
             />
             {errors.email && (
-              <p className="mt-1 text-xs text-destructive">
+              <p className="mt-1 text-[10px] text-muted-foreground font-semibold">
                 {errors.email.message}
               </p>
             )}
@@ -208,22 +202,20 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-foreground"
+              className="block text-xs font-bold uppercase tracking-wider text-foreground"
             >
               Password
             </label>
             <input
               id="password"
               type="password"
-              className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                errors.password
-                  ? "border-destructive focus:ring-destructive/50"
-                  : "border-input"
+              className={`mt-1.5 block w-full px-3 py-2 bg-background border rounded focus:outline-none focus:ring-1 focus:ring-foreground focus:border-foreground transition-all text-xs font-medium ${
+                errors.password ? "border-neutral-800" : "border-input"
               }`}
               {...register("password")}
             />
             {errors.password && (
-              <p className="mt-1 text-xs text-destructive">
+              <p className="mt-1 text-[10px] text-muted-foreground font-semibold">
                 {errors.password.message}
               </p>
             )}
@@ -232,9 +224,9 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-6 flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors disabled:opacity-50"
+            className="w-full mt-6 flex justify-center py-2.5 px-4 rounded text-xs font-bold text-background bg-foreground hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50"
           >
-            {isSubmitting ? "Creating account..." : "Create account"}
+            {isSubmitting ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
           </button>
         </form>
       </div>

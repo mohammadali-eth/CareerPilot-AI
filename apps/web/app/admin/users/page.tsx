@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Info,
+  RefreshCw
 } from "lucide-react";
 import { adminService, UserSummary, UserDetails } from "../../../services/admin";
 import { useAuthStore } from "../../../store/auth";
@@ -173,11 +174,11 @@ export default function UserManagement() {
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">User Administration</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+      <div className="border-b border-border pb-6">
+        <h1 className="text-3xl font-extrabold tracking-tight">User Administration</h1>
+        <p className="text-xs text-muted-foreground mt-1">
           Perform administrative moderation, suspend accounts, force password changes, and assign access control tiers.
         </p>
       </div>
@@ -190,9 +191,9 @@ export default function UserManagement() {
             placeholder="Search email, name, title..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-border bg-card/40 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+            className="w-full pl-10 pr-4 py-2 text-xs rounded border border-border bg-card focus:outline-none focus:ring-1 focus:ring-foreground transition-all"
           />
-          <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
         </form>
 
         <div className="flex flex-wrap gap-2 w-full md:w-auto">
@@ -202,7 +203,7 @@ export default function UserManagement() {
               setRole(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 text-xs rounded-lg border border-border bg-card/40 focus:outline-none"
+            className="px-3 py-2 text-xs rounded border border-border bg-card text-foreground focus:outline-none"
           >
             <option value="">All Roles</option>
             <option value="SUPER_ADMIN">Super Admin</option>
@@ -219,7 +220,7 @@ export default function UserManagement() {
               setIsActive(val === "" ? undefined : val === "true");
               setPage(1);
             }}
-            className="px-3 py-2 text-xs rounded-lg border border-border bg-card/40 focus:outline-none"
+            className="px-3 py-2 text-xs rounded border border-border bg-card text-foreground focus:outline-none"
           >
             <option value="">All Statuses</option>
             <option value="true">Active</option>
@@ -231,46 +232,47 @@ export default function UserManagement() {
       {/* Main Area: Grid of List & Details Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Users Table */}
-        <div className="lg:col-span-2 rounded-xl border border-border bg-card/30 backdrop-blur-md overflow-hidden">
+        <div className="lg:col-span-2 rounded border border-border bg-card overflow-hidden">
           {loading ? (
-            <div className="p-8 text-center text-sm text-muted-foreground animate-pulse">
-              Querying platform registry database...
+            <div className="p-8 text-center text-xs font-bold uppercase tracking-wider text-muted-foreground animate-pulse flex items-center justify-center gap-1.5">
+              <RefreshCw className="h-4 w-4 animate-spin" />
+              <span>Querying platform registry database...</span>
             </div>
           ) : users.length === 0 ? (
-            <div className="p-8 text-center text-sm text-muted-foreground">
+            <div className="p-8 text-center text-xs text-muted-foreground">
               No matching registered accounts found.
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-border bg-muted/20 text-xs font-semibold text-muted-foreground uppercase">
+                  <tr className="border-b border-border bg-neutral-50 dark:bg-neutral-900 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                     <th className="p-4">Email</th>
                     <th className="p-4">Role</th>
                     <th className="p-4">Status</th>
                     <th className="p-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border text-sm">
+                <tbody className="divide-y divide-border text-xs">
                   {users.map((u) => (
                     <tr
                       key={u.id}
-                      className={`hover:bg-muted/10 transition-colors ${
-                        selectedUserId === u.id ? "bg-indigo-500/5" : ""
+                      className={`hover:bg-neutral-50 dark:hover:bg-neutral-950/40 transition-colors ${
+                        selectedUserId === u.id ? "bg-neutral-50 dark:bg-neutral-950/60" : ""
                       }`}
                     >
-                      <td className="p-4 font-medium max-w-[200px] truncate">{u.email}</td>
+                      <td className="p-4 font-bold max-w-[200px] truncate text-foreground">{u.email}</td>
                       <td className="p-4">
-                        <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase tracking-wider">
+                        <span className="px-2 py-0.5 text-[9px] font-bold rounded border border-border bg-neutral-50 dark:bg-neutral-900 text-foreground uppercase tracking-wider">
                           {u.role}
                         </span>
                       </td>
                       <td className="p-4">
                         <span
-                          className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider ${
+                          className={`px-2 py-0.5 text-[9px] font-bold rounded border uppercase tracking-wider ${
                             u.is_active
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                              : "bg-destructive/10 text-destructive border border-destructive/20"
+                              ? "bg-foreground text-background border-foreground"
+                              : "bg-background text-foreground border-border"
                           }`}
                         >
                           {u.is_active ? "Active" : "Suspended"}
@@ -279,10 +281,10 @@ export default function UserManagement() {
                       <td className="p-4 text-right">
                         <button
                           onClick={() => handleViewDetails(u.id)}
-                          className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                          className="p-1.5 rounded border border-border text-muted-foreground hover:text-foreground hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors"
                           title="View Details"
                         >
-                          <Eye className="h-4.5 w-4.5" />
+                          <Eye className="h-4 w-4" />
                         </button>
                       </td>
                     </tr>
@@ -292,7 +294,7 @@ export default function UserManagement() {
 
               {/* Pagination controls */}
               {totalPages > 1 && (
-                <div className="flex items-center justify-between p-4 border-t border-border bg-muted/10 text-xs">
+                <div className="flex items-center justify-between p-4 border-t border-border bg-neutral-50 dark:bg-neutral-950 text-xs">
                   <span className="text-muted-foreground">
                     Showing Page {page} of {totalPages} ({total} accounts)
                   </span>
@@ -300,14 +302,14 @@ export default function UserManagement() {
                     <button
                       onClick={() => setPage((p) => Math.max(p - 1, 1))}
                       disabled={page === 1}
-                      className="p-1.5 rounded-md hover:bg-muted disabled:opacity-50 transition-colors"
+                      className="p-1.5 rounded border border-border bg-card text-foreground hover:bg-neutral-100 disabled:opacity-50 transition-colors"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
                       disabled={page === totalPages}
-                      className="p-1.5 rounded-md hover:bg-muted disabled:opacity-50 transition-colors"
+                      className="p-1.5 rounded border border-border bg-card text-foreground hover:bg-neutral-100 disabled:opacity-50 transition-colors"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </button>
@@ -319,31 +321,31 @@ export default function UserManagement() {
         </div>
 
         {/* User Details Drawer Panel */}
-        <div className="p-6 rounded-xl border border-border bg-card/40 backdrop-blur-md space-y-6 min-h-[450px]">
+        <div className="p-6 rounded border border-border bg-card space-y-6 min-h-[450px]">
           {!selectedUserId ? (
             <div className="h-full flex flex-col items-center justify-center text-center text-muted-foreground py-16">
-              <Info className="h-10 w-10 text-muted-foreground/30 mb-3" />
-              <p className="text-sm">Select a registered user to execute administrative moderation commands.</p>
+              <Info className="h-10 w-10 text-muted-foreground/35 mb-3" />
+              <p className="text-xs">Select a registered user to execute administrative moderation commands.</p>
             </div>
           ) : loadingDetails ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3 text-muted-foreground animate-pulse">
-              <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-primary" />
-              <span className="text-xs">Querying audit logs registry...</span>
+              <RefreshCw className="animate-spin h-6 w-6 text-foreground" />
+              <span className="text-[10px] uppercase font-bold tracking-wider">Querying audit logs registry...</span>
             </div>
           ) : details ? (
             <div className="space-y-6">
               {/* Header Title Info */}
               <div className="flex items-start justify-between border-b border-border pb-4">
                 <div>
-                  <h3 className="font-bold text-base truncate max-w-[180px]">{details.email}</h3>
-                  <span className="text-xs text-muted-foreground font-mono">ID: {details.id.slice(0, 8)}...</span>
+                  <h3 className="font-bold text-sm truncate max-w-[180px] text-foreground">{details.email}</h3>
+                  <span className="text-[10px] text-muted-foreground font-mono">ID: {details.id.slice(0, 8)}...</span>
                 </div>
                 <button
                   onClick={() => {
                     setSelectedUserId(null);
                     setDetails(null);
                   }}
-                  className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
+                  className="p-1.5 rounded border border-border text-muted-foreground hover:text-foreground hover:bg-neutral-100"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -351,35 +353,35 @@ export default function UserManagement() {
 
               {/* Usage Stats Grid */}
               <div>
-                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Usage Activity Overview</h4>
+                <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Usage Activity Overview</h4>
                 <div className="grid grid-cols-2 gap-2 text-center text-xs">
-                  <div className="p-2.5 rounded-lg border border-border bg-muted/15">
-                    <p className="font-extrabold text-sm">{details.usage_summary.resumes_uploaded}</p>
-                    <span className="text-[10px] text-muted-foreground">Resumes</span>
+                  <div className="p-2.5 rounded border border-border bg-neutral-50 dark:bg-neutral-900">
+                    <p className="font-extrabold text-sm text-foreground">{details.usage_summary.resumes_uploaded}</p>
+                    <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider mt-0.5 block">Resumes</span>
                   </div>
-                  <div className="p-2.5 rounded-lg border border-border bg-muted/15">
-                    <p className="font-extrabold text-sm">{details.usage_summary.interviews_simulated}</p>
-                    <span className="text-[10px] text-muted-foreground">Interviews</span>
+                  <div className="p-2.5 rounded border border-border bg-neutral-50 dark:bg-neutral-900">
+                    <p className="font-extrabold text-sm text-foreground">{details.usage_summary.interviews_simulated}</p>
+                    <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider mt-0.5 block">Interviews</span>
                   </div>
-                  <div className="p-2.5 rounded-lg border border-border bg-muted/15">
-                    <p className="font-extrabold text-sm">{details.usage_summary.roadmaps_created}</p>
-                    <span className="text-[10px] text-muted-foreground">Roadmaps</span>
+                  <div className="p-2.5 rounded border border-border bg-neutral-50 dark:bg-neutral-900">
+                    <p className="font-extrabold text-sm text-foreground">{details.usage_summary.roadmaps_created}</p>
+                    <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider mt-0.5 block">Roadmaps</span>
                   </div>
-                  <div className="p-2.5 rounded-lg border border-border bg-muted/15">
-                    <p className="font-extrabold text-sm">{details.usage_summary.reports_generated}</p>
-                    <span className="text-[10px] text-muted-foreground">Reports</span>
+                  <div className="p-2.5 rounded border border-border bg-neutral-50 dark:bg-neutral-900">
+                    <p className="font-extrabold text-sm text-foreground">{details.usage_summary.reports_generated}</p>
+                    <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider mt-0.5 block">Reports</span>
                   </div>
                 </div>
               </div>
 
               {/* Control Action Buttons */}
               <div className="space-y-2">
-                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Moderation Commands</h4>
+                <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Moderation Commands</h4>
                 <div className="flex flex-col gap-2">
                   {details.is_active ? (
                     <button
                       onClick={() => setShowSuspendModal(true)}
-                      className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg border border-destructive/20 text-destructive hover:bg-destructive/10 transition-colors"
+                      className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded border border-border text-foreground hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors"
                     >
                       <UserX className="h-4 w-4" />
                       Suspend User Account
@@ -387,7 +389,7 @@ export default function UserManagement() {
                   ) : (
                     <button
                       onClick={() => setShowActivateModal(true)}
-                      className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg bg-emerald-500 text-white hover:bg-emerald-600 transition-colors"
+                      className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded bg-foreground text-background hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors border border-foreground"
                     >
                       <UserCheck className="h-4 w-4" />
                       Re-activate Account
@@ -396,7 +398,7 @@ export default function UserManagement() {
 
                   <button
                     onClick={() => setShowPasswordModal(true)}
-                    className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg border border-border bg-card/60 hover:bg-card text-foreground transition-colors"
+                    className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded border border-border bg-card hover:bg-neutral-100 dark:hover:bg-neutral-900 text-foreground transition-colors"
                   >
                     <Key className="h-4 w-4" />
                     Reset User Password
@@ -405,7 +407,7 @@ export default function UserManagement() {
                   <button
                     onClick={() => setShowRoleModal(true)}
                     disabled={!isSuperAdmin}
-                    className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg border border-border bg-card/60 hover:bg-card text-foreground disabled:opacity-40 transition-colors"
+                    className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded border border-border bg-card hover:bg-neutral-100 dark:hover:bg-neutral-900 text-foreground disabled:opacity-40 transition-colors"
                     title={!isSuperAdmin ? "Requires SUPER_ADMIN permissions" : "Upgrade account access"}
                   >
                     <Shield className="h-4 w-4" />
@@ -414,7 +416,7 @@ export default function UserManagement() {
 
                   <button
                     onClick={() => setShowDeleteModal(true)}
-                    className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg border border-transparent hover:bg-destructive/15 text-destructive transition-colors"
+                    className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded border border-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900 text-foreground transition-colors"
                   >
                     <Trash2 className="h-4 w-4" />
                     Delete User Profile
@@ -424,16 +426,16 @@ export default function UserManagement() {
 
               {/* Recent audit trails list */}
               <div>
-                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Activity History Log</h4>
+                <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Activity History Log</h4>
                 {details.recent_activity.length === 0 ? (
                   <p className="text-xs text-muted-foreground italic">No logins/audited actions recorded yet.</p>
                 ) : (
                   <div className="space-y-2 max-h-[180px] overflow-y-auto pr-1">
                     {details.recent_activity.map((act) => (
-                      <div key={act.id} className="p-2 rounded border border-border bg-muted/10 text-xs">
+                      <div key={act.id} className="p-2.5 rounded border border-border bg-neutral-50 dark:bg-neutral-900 text-xs">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-bold text-indigo-400">{act.action_type}</span>
-                          <span className="text-[10px] text-muted-foreground">
+                          <span className="font-bold text-foreground uppercase tracking-wider text-[9px]">{act.action_type}</span>
+                          <span className="text-[9px] text-muted-foreground font-semibold">
                             {new Date(act.created_at).toLocaleDateString()}
                           </span>
                         </div>
@@ -451,12 +453,12 @@ export default function UserManagement() {
       {/* SUSPEND MODAL */}
       {showSuspendModal && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-card border border-border rounded-xl p-6 space-y-4 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center gap-2 text-destructive">
-              <AlertTriangle className="h-5 w-5" />
-              <h3 className="font-bold text-lg">Suspend Account</h3>
+          <div className="w-full max-w-md bg-card border border-border rounded p-6 space-y-4 shadow-2xl animate-scaleIn">
+            <div className="flex items-center gap-2 border-b border-border pb-3">
+              <AlertTriangle className="h-5 w-5 text-foreground" />
+              <h3 className="font-bold text-xs uppercase tracking-wider text-foreground">Suspend Account</h3>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Provide justification for deactivating this user account.
             </p>
             <input
@@ -464,20 +466,20 @@ export default function UserManagement() {
               placeholder="E.g., Terms of service violation - abuse"
               value={suspendReason}
               onChange={(e) => setSuspendReason(e.target.value)}
-              className="w-full p-2 text-sm border border-border rounded-lg bg-background"
+              className="w-full p-2 text-xs border border-border rounded bg-background focus:outline-none focus:ring-1 focus:ring-foreground"
             />
-            {actionError && <p className="text-xs text-destructive">{actionError}</p>}
+            {actionError && <p className="text-[10px] font-bold text-foreground">{actionError}</p>}
             <div className="flex justify-end gap-2 text-xs">
               <button
                 onClick={() => setShowSuspendModal(false)}
-                className="px-3.5 py-2 hover:bg-muted border border-border rounded-lg"
+                className="px-3.5 py-2 hover:bg-neutral-100 border border-border rounded text-xs font-bold uppercase tracking-wider text-foreground"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSuspend}
                 disabled={!suspendReason.trim()}
-                className="px-3.5 py-2 bg-destructive text-white rounded-lg hover:bg-destructive/90 transition-colors disabled:opacity-50"
+                className="px-3.5 py-2 bg-foreground text-background rounded hover:bg-neutral-800 dark:hover:bg-neutral-250 transition-colors disabled:opacity-50 text-xs font-bold uppercase tracking-wider"
               >
                 Deactivate account
               </button>
@@ -489,9 +491,9 @@ export default function UserManagement() {
       {/* ACTIVATE MODAL */}
       {showActivateModal && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-card border border-border rounded-xl p-6 space-y-4 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <h3 className="font-bold text-lg">Re-activate User Account</h3>
-            <p className="text-sm text-muted-foreground">
+          <div className="w-full max-w-md bg-card border border-border rounded p-6 space-y-4 shadow-2xl animate-scaleIn">
+            <h3 className="font-bold text-xs uppercase tracking-wider text-foreground border-b border-border pb-3">Re-activate User Account</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Confirm re-granting platform permissions to this account.
             </p>
             <input
@@ -499,20 +501,20 @@ export default function UserManagement() {
               placeholder="E.g., Appeal approved by compliance team"
               value={activateReason}
               onChange={(e) => setActivateReason(e.target.value)}
-              className="w-full p-2 text-sm border border-border rounded-lg bg-background"
+              className="w-full p-2 text-xs border border-border rounded bg-background focus:outline-none focus:ring-1 focus:ring-foreground"
             />
-            {actionError && <p className="text-xs text-destructive">{actionError}</p>}
+            {actionError && <p className="text-[10px] font-bold text-foreground">{actionError}</p>}
             <div className="flex justify-end gap-2 text-xs">
               <button
                 onClick={() => setShowActivateModal(false)}
-                className="px-3.5 py-2 hover:bg-muted border border-border rounded-lg"
+                className="px-3.5 py-2 hover:bg-neutral-100 border border-border rounded text-xs font-bold uppercase tracking-wider text-foreground"
               >
                 Cancel
               </button>
               <button
                 onClick={handleActivate}
                 disabled={!activateReason.trim()}
-                className="px-3.5 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                className="px-3.5 py-2 bg-foreground text-background rounded hover:bg-neutral-800 dark:hover:bg-neutral-250 transition-colors disabled:opacity-50 text-xs font-bold uppercase tracking-wider border border-foreground"
               >
                 Restore user access
               </button>
@@ -524,9 +526,9 @@ export default function UserManagement() {
       {/* PASSWORD RESET MODAL */}
       {showPasswordModal && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-card border border-border rounded-xl p-6 space-y-4 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <h3 className="font-bold text-lg">Force Password Update</h3>
-            <p className="text-sm text-muted-foreground">
+          <div className="w-full max-w-md bg-card border border-border rounded p-6 space-y-4 shadow-2xl animate-scaleIn">
+            <h3 className="font-bold text-xs uppercase tracking-wider text-foreground border-b border-border pb-3">Force Password Update</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Input a secure new password and justification.
             </p>
             <div className="space-y-3">
@@ -535,28 +537,28 @@ export default function UserManagement() {
                 placeholder="New Password (min 6 characters)"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full p-2 text-sm border border-border rounded-lg bg-background"
+                className="w-full p-2 text-xs border border-border rounded bg-background focus:outline-none focus:ring-1 focus:ring-foreground"
               />
               <input
                 type="text"
                 placeholder="E.g., Security escalation request"
                 value={passwordReason}
                 onChange={(e) => setPasswordReason(e.target.value)}
-                className="w-full p-2 text-sm border border-border rounded-lg bg-background"
+                className="w-full p-2 text-xs border border-border rounded bg-background focus:outline-none focus:ring-1 focus:ring-foreground"
               />
             </div>
-            {actionError && <p className="text-xs text-destructive">{actionError}</p>}
+            {actionError && <p className="text-[10px] font-bold text-foreground">{actionError}</p>}
             <div className="flex justify-end gap-2 text-xs">
               <button
                 onClick={() => setShowPasswordModal(false)}
-                className="px-3.5 py-2 hover:bg-muted border border-border rounded-lg"
+                className="px-3.5 py-2 hover:bg-neutral-100 border border-border rounded text-xs font-bold uppercase tracking-wider text-foreground"
               >
                 Cancel
               </button>
               <button
                 onClick={handleResetPassword}
                 disabled={!newPassword.trim() || !passwordReason.trim()}
-                className="px-3.5 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors disabled:opacity-50"
+                className="px-3.5 py-2 bg-foreground text-background rounded hover:bg-neutral-800 dark:hover:bg-neutral-250 transition-colors disabled:opacity-50 text-xs font-bold uppercase tracking-wider border border-foreground"
               >
                 Reset Password
               </button>
@@ -568,19 +570,19 @@ export default function UserManagement() {
       {/* ROLE CHANGE MODAL */}
       {showRoleModal && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-card border border-border rounded-xl p-6 space-y-4 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-indigo-400 animate-pulse" />
-              <h3 className="font-bold text-lg">Modify Authorization Level</h3>
+          <div className="w-full max-w-md bg-card border border-border rounded p-6 space-y-4 shadow-2xl animate-scaleIn">
+            <div className="flex items-center gap-2 border-b border-border pb-3">
+              <Shield className="h-5 w-5 text-foreground" />
+              <h3 className="font-bold text-xs uppercase tracking-wider text-foreground">Modify Authorization Level</h3>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Super admin role assignment check. Assign system access tags.
             </p>
             <div className="space-y-3">
               <select
                 value={targetRole}
                 onChange={(e) => setTargetRole(e.target.value)}
-                className="w-full p-2 text-sm border border-border rounded-lg bg-background"
+                className="w-full p-2 text-xs border border-border rounded bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-foreground"
               >
                 <option value="user">User (Standard Access)</option>
                 <option value="SUPPORT_AGENT">Support Agent</option>
@@ -593,21 +595,21 @@ export default function UserManagement() {
                 placeholder="Provide role upgrade/downgrade reason"
                 value={roleReason}
                 onChange={(e) => setRoleReason(e.target.value)}
-                className="w-full p-2 text-sm border border-border rounded-lg bg-background"
+                className="w-full p-2 text-xs border border-border rounded bg-background focus:outline-none focus:ring-1 focus:ring-foreground"
               />
             </div>
-            {actionError && <p className="text-xs text-destructive">{actionError}</p>}
+            {actionError && <p className="text-[10px] font-bold text-foreground">{actionError}</p>}
             <div className="flex justify-end gap-2 text-xs">
               <button
                 onClick={() => setShowRoleModal(false)}
-                className="px-3.5 py-2 hover:bg-muted border border-border rounded-lg"
+                className="px-3.5 py-2 hover:bg-neutral-100 border border-border rounded text-xs font-bold uppercase tracking-wider text-foreground"
               >
                 Cancel
               </button>
               <button
                 onClick={handleAssignRole}
                 disabled={!roleReason.trim()}
-                className="px-3.5 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors disabled:opacity-50"
+                className="px-3.5 py-2 bg-foreground text-background rounded hover:bg-neutral-800 dark:hover:bg-neutral-250 transition-colors disabled:opacity-50 text-xs font-bold uppercase tracking-wider border border-foreground"
               >
                 Update Permissions
               </button>
@@ -619,12 +621,12 @@ export default function UserManagement() {
       {/* DELETE MODAL */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-card border border-border rounded-xl p-6 space-y-4 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center gap-2 text-destructive">
+          <div className="w-full max-w-md bg-card border border-border rounded p-6 space-y-4 shadow-2xl animate-scaleIn">
+            <div className="flex items-center gap-2 border-b border-border pb-3 text-foreground">
               <AlertTriangle className="h-5 w-5" />
-              <h3 className="font-bold text-lg">Permanent Deletion</h3>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-foreground">Permanent Deletion</h3>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Confirm complete profile deletion. This action is irreversible.
             </p>
             <input
@@ -632,20 +634,20 @@ export default function UserManagement() {
               placeholder="Confirm delete reasons"
               value={deleteReason}
               onChange={(e) => setDeleteReason(e.target.value)}
-              className="w-full p-2 text-sm border border-border rounded-lg bg-background"
+              className="w-full p-2 text-xs border border-border rounded bg-background focus:outline-none focus:ring-1 focus:ring-foreground"
             />
-            {actionError && <p className="text-xs text-destructive">{actionError}</p>}
+            {actionError && <p className="text-[10px] font-bold text-foreground">{actionError}</p>}
             <div className="flex justify-end gap-2 text-xs">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-3.5 py-2 hover:bg-muted border border-border rounded-lg"
+                className="px-3.5 py-2 hover:bg-neutral-100 border border-border rounded text-xs font-bold uppercase tracking-wider text-foreground"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteUser}
                 disabled={!deleteReason.trim()}
-                className="px-3.5 py-2 bg-destructive text-white rounded-lg hover:bg-destructive/90 transition-colors disabled:opacity-50"
+                className="px-3.5 py-2 bg-foreground text-background rounded hover:bg-neutral-800 dark:hover:bg-neutral-250 transition-colors disabled:opacity-50 text-xs font-bold uppercase tracking-wider border border-foreground"
               >
                 Destroy Profile Permanent
               </button>

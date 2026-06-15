@@ -37,6 +37,16 @@ async def upload_resume(
             detail="Unsupported document format. Only PDF and DOCX files are accepted."
         )
 
+    # Enforce maximum upload file size constraint (10MB)
+    file.file.seek(0, 2)
+    file_size = file.file.tell()
+    file.file.seek(0)
+    if file_size > 10 * 1024 * 1024:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail="File size exceeds the maximum allowed limit of 10MB."
+        )
+
     try:
         # Read file bytes
         file_bytes = await file.read()
