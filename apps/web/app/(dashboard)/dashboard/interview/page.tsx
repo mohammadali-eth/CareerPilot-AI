@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MessageSquare, Play, HelpCircle } from "lucide-react";
+import { MessageSquare, Play } from "lucide-react";
 
 export default function InterviewPage() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { TrendingUp, AlertTriangle, CheckCircle, Search } from "lucide-react";
+import { AlertTriangle, CheckCircle } from "lucide-react";
 
 export default function SkillGapPage() {
   return (

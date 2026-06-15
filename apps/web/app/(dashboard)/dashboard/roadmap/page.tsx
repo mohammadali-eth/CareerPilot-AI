@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Map, ArrowRight, BookOpen } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 export default function RoadmapPage() {
   return (

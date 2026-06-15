@@ -13,7 +13,6 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  User,
   Menu,
   X,
   Sparkles,

@@ -25,7 +25,7 @@ class ApiClient {
 
     // Setup headers
     const headers = new Headers(fetchOptions.headers || {});
-    if (!headers.has("Content-Type")) {
+    if (!headers.has("Content-Type") && !(fetchOptions.body instanceof FormData)) {
       headers.set("Content-Type", "application/json");
     }
 
@@ -138,18 +138,20 @@ class ApiClient {
   }
 
   post(endpoint: string, body?: any, options?: RequestOptions) {
+    const isFormData = typeof window !== "undefined" && body instanceof FormData;
     return this.request(endpoint, {
       ...options,
       method: "POST",
-      body: body ? JSON.stringify(body) : undefined,
+      body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
     });
   }
 
   put(endpoint: string, body?: any, options?: RequestOptions) {
+    const isFormData = typeof window !== "undefined" && body instanceof FormData;
     return this.request(endpoint, {
       ...options,
       method: "PUT",
-      body: body ? JSON.stringify(body) : undefined,
+      body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
     });
   }
 
