@@ -272,16 +272,18 @@ export default function AnalyticsDashboardPage() {
                 interview_performance: "Interview Readiness",
                 learning_consistency: "Consistency Metrics",
             };
+            const colorClass = colorsMap[key] || "bg-indigo-500 text-indigo-600 border-indigo-500/20";
+            const label = labelMap[key] || key;
             return (<div key={key} className="space-y-1.5 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-700">{labelMap[key]}</span>
+                    <span className="font-bold text-slate-700">{label}</span>
                     <div className="flex items-center gap-1.5 font-mono text-[10px]">
                       <span className="text-muted-foreground">wt: {intPct(val.weight)}</span>
                       <span className="font-bold text-slate-800">{Math.round(val.score)}%</span>
                     </div>
                   </div>
                   <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden flex">
-                    <div className={`h-full ${colorsMap[key].split(" ")[0]}`} style={{ width: `${val.score}%` }}/>
+                    <div className={`h-full ${colorClass.split(" ")[0]}`} style={{ width: `${val.score}%` }}/>
                   </div>
                 </div>);
         })}
@@ -432,24 +434,28 @@ function TrendChartSVG({ snapshots, focusedMetric }) {
                 return s.career_readiness_score;
         }
     };
-    const scores = snapshots.map(getMetricVal);
-    const minScore = 0; // Lock base to 0 for solid visual bounds
     const maxScore = 100;
     const pointsCount = snapshots.length;
     // Calculate SVG Coordinates
     const points = snapshots.map((s, idx) => {
-        const x = paddingX + (idx / (pointsCount - 1)) * (width - 2 * paddingX);
+        const divisor = pointsCount > 1 ? pointsCount - 1 : 1;
+        const x = paddingX + (idx / divisor) * (width - 2 * paddingX);
         const score = getMetricVal(s);
         const y = height - paddingY - (score / maxScore) * (height - 2 * paddingY);
         return { x, y, score, date: s.snapshot_date };
     });
     // Polyline coordinates string
     const polylinePoints = points.map(p => `${p.x},${p.y}`).join(" ");
+    const firstPoint = points[0];
+    const lastPoint = points[points.length - 1];
+    if (!firstPoint || !lastPoint) {
+        return null;
+    }
     // Closed area polygon coordinates string
     const areaPoints = [
-        `${points[0].x},${height - paddingY}`,
+        `${firstPoint.x},${height - paddingY}`,
         ...points.map(p => `${p.x},${p.y}`),
-        `${points[points.length - 1].x},${height - paddingY}`
+        `${lastPoint.x},${height - paddingY}`
     ].join(" ");
     return (<svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full">
       <defs>

@@ -84,6 +84,7 @@ from api.v1.roadmap import router as roadmap_router
 from api.v1.interview import router as interview_router
 from api.v1.mentor import router as mentor_router
 from api.v1.analytics import router as analytics_router
+from api.v1.admin import router as admin_router
 
 app.include_router(auth_router, prefix=settings.API_V1_STR)
 app.include_router(users_router, prefix=settings.API_V1_STR)
@@ -93,6 +94,7 @@ app.include_router(roadmap_router, prefix=settings.API_V1_STR)
 app.include_router(interview_router, prefix=settings.API_V1_STR)
 app.include_router(mentor_router, prefix=settings.API_V1_STR)
 app.include_router(analytics_router, prefix=settings.API_V1_STR)
+app.include_router(admin_router, prefix=settings.API_V1_STR)
 
 # Global Exception Handler
 @app.exception_handler(Exception)

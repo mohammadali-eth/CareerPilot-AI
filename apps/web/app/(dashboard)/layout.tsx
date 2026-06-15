@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   Sparkles,
+  Shield,
 } from "lucide-react";
 import { useAuthStore } from "../../store/auth";
 import { useLogout } from "../../hooks/use-auth";
@@ -96,6 +97,13 @@ export default function DashboardLayout({
       ? `${user.profile.first_name} ${user.profile.last_name}`
       : user.email.split("@")[0];
 
+  const displayItems = [...navigationItems];
+  if (user && user.role !== "user") {
+    if (!displayItems.some(i => i.href === "/admin")) {
+      displayItems.push({ name: "Admin Portal", href: "/admin", icon: Shield });
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background flex">
       {/* 1. Desktop Sidebar */}
@@ -113,7 +121,7 @@ export default function DashboardLayout({
 
         {/* Sidebar Links */}
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-          {navigationItems.map((item) => {
+          {displayItems.map((item) => {
             const isActive =
               pathname === item.href || pathname?.startsWith(item.href + "/");
             const Icon = item.icon;
@@ -193,7 +201,7 @@ export default function DashboardLayout({
               className="fixed top-16 bottom-0 left-0 w-64 border-r border-border bg-card flex flex-col p-4 space-y-1 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {navigationItems.map((item) => {
+              {displayItems.map((item) => {
                 const isActive =
                   pathname === item.href ||
                   pathname?.startsWith(item.href + "/");

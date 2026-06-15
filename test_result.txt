@@ -1,0 +1,306 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________________ test_admin_dashboard_authorized ________________________
+.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py:1517: in __getattr__
+    return getattr(self.comparator, key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'Comparator' object has no attribute '_is_tuple_type'
+
+The above exception was the direct cause of the following exception:
+tests/test_admin.py:101: in test_admin_dashboard_authorized
+    res = client.get("/api/v1/admin/analytics")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/starlette/testclient.py:548: in get
+    return super().get(
+.venv/lib/python3.12/site-packages/httpx/_client.py:1066: in get
+    return self.request(
+.venv/lib/python3.12/site-packages/starlette/testclient.py:516: in request
+    return super().request(
+.venv/lib/python3.12/site-packages/httpx/_client.py:837: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/httpx/_client.py:926: in send
+    response = self._send_handling_auth(
+.venv/lib/python3.12/site-packages/httpx/_client.py:954: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv/lib/python3.12/site-packages/httpx/_client.py:991: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/httpx/_client.py:1027: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/starlette/testclient.py:398: in handle_request
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/testclient.py:395: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:123: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+.venv/lib/python3.12/site-packages/starlette/middleware/cors.py:85: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:65: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv/lib/python3.12/site-packages/starlette/routing.py:756: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:776: in app
+    await route.handle(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:297: in handle
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:77: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:64: in wrapped_app
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    await app(scope, receive, sender)
+.venv/lib/python3.12/site-packages/starlette/routing.py:72: in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/fastapi/routing.py:278: in app
+    raw_response = await run_endpoint_function(
+.venv/lib/python3.12/site-packages/fastapi/routing.py:191: in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps/api/api/v1/admin.py:44: in get_dashboard_analytics
+    return await admin_service.get_dashboard_summary()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps/api/services/admin.py:469: in get_dashboard_summary
+    select(func.count(User.id)).where(User.created_at >= datetime.now(timezone.utc) - func.cast("30 days", func.interval))
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/sqlalchemy/sql/functions.py:993: in __call__
+    return func(*c, **o)
+           ^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py:3440: in __init__
+    self.clause = coercions.expect(
+.venv/lib/python3.12/site-packages/sqlalchemy/sql/coercions.py:396: in expect
+    resolved = impl._literal_coercion(
+.venv/lib/python3.12/site-packages/sqlalchemy/sql/coercions.py:764: in _literal_coercion
+    return elements.BindParameter(
+.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py:2061: in __init__
+    elif is_tuple_type(type_):
+         ^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py:1519: in __getattr__
+    raise AttributeError(
+E   AttributeError: Neither 'Function' object nor 'Comparator' object has an attribute '_is_tuple_type'
+----------------------------- Captured stderr call -----------------------------
+2026-06-15 17:13:12 [[91mERROR[0m] careerpilot: Unhandled system error occurred on request /api/v1/admin/analytics: Neither 'Function' object nor 'Comparator' object has an attribute '_is_tuple_type'
+Traceback (most recent call last):
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 1517, in __getattr__
+    return getattr(self.comparator, key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Comparator' object has no attribute '_is_tuple_type'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 65, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/routing.py", line 756, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/routing.py", line 776, in app
+    await route.handle(scope, receive, send)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 278, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/api/v1/admin.py", line 44, in get_dashboard_analytics
+    return await admin_service.get_dashboard_summary()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/services/admin.py", line 469, in get_dashboard_summary
+    select(func.count(User.id)).where(User.created_at >= datetime.now(timezone.utc) - func.cast("30 days", func.interval))
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/sqlalchemy/sql/functions.py", line 993, in __call__
+    return func(*c, **o)
+           ^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 3440, in __init__
+    self.clause = coercions.expect(
+                  ^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/sqlalchemy/sql/coercions.py", line 396, in expect
+    resolved = impl._literal_coercion(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/sqlalchemy/sql/coercions.py", line 764, in _literal_coercion
+    return elements.BindParameter(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 2061, in __init__
+    elif is_tuple_type(type_):
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 1519, in __getattr__
+    raise AttributeError(
+AttributeError: Neither 'Function' object nor 'Comparator' object has an attribute '_is_tuple_type'
+=============================== warnings summary ===============================
+apps/api/schemas/user.py:45
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/user.py:45: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ProfileResponse(BaseModel):
+
+apps/api/schemas/user.py:55
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/user.py:55: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class UserProfileResponse(UserBase):
+
+.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+apps/api/schemas/resume.py:7
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/resume.py:7: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ResumeScoreBase(BaseModel):
+
+apps/api/schemas/resume.py:19
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/resume.py:19: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ATSReportBase(BaseModel):
+
+apps/api/schemas/resume.py:31
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/resume.py:31: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ResumeResponse(BaseModel):
+
+apps/api/schemas/resume.py:45
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/resume.py:45: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ResumeAnalysisResult(BaseModel):
+
+apps/api/schemas/career.py:35
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/career.py:35: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class CareerMatchResponse(BaseModel):
+
+apps/api/schemas/career.py:71
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/career.py:71: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class CareerRecommendationResponse(BaseModel):
+
+apps/api/schemas/roadmap.py:79
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/roadmap.py:79: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class RoadmapProgressResponse(BaseModel):
+
+apps/api/schemas/roadmap.py:92
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/roadmap.py:92: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class RoadmapMilestoneResponse(BaseModel):
+
+apps/api/schemas/roadmap.py:106
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/roadmap.py:106: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class RoadmapResponse(BaseModel):
+
+apps/api/schemas/interview.py:25
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/interview.py:25: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class InterviewAnswerResponse(BaseModel):
+
+apps/api/schemas/interview.py:38
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/interview.py:38: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class InterviewQuestionResponse(BaseModel):
+
+apps/api/schemas/interview.py:52
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/interview.py:52: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class InterviewSessionResponse(BaseModel):
+
+apps/api/schemas/mentor.py:7
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/mentor.py:7: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ChatMessageResponse(BaseModel):
+
+apps/api/schemas/mentor.py:19
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/mentor.py:19: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ChatSessionResponse(BaseModel):
+
+apps/api/schemas/mentor.py:33
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/mentor.py:33: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ChatSessionDetailResponse(BaseModel):
+
+apps/api/schemas/mentor.py:60
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/mentor.py:60: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ChatExportResponse(BaseModel):
+
+apps/api/schemas/analytics.py:7
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/analytics.py:7: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class UserMetricResponse(BaseModel):
+
+apps/api/schemas/analytics.py:26
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/analytics.py:26: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class AnalyticsSnapshotResponse(BaseModel):
+
+apps/api/schemas/analytics.py:45
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/analytics.py:45: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class AnalyticsReportResponse(BaseModel):
+
+apps/api/schemas/analytics.py:58
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/analytics.py:58: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class ReportExportResponse(BaseModel):
+
+apps/api/schemas/admin.py:43
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/admin.py:43: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class AdminAuditLogResponse(BaseModel):
+
+apps/api/schemas/admin.py:56
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/admin.py:56: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class AdminActionResponse(BaseModel):
+
+apps/api/schemas/admin.py:68
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/schemas/admin.py:68: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class AdminUserSummary(BaseModel):
+
+apps/api/main.py:125
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/main.py:125: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+.venv/lib/python3.12/site-packages/fastapi/applications.py:4495
+.venv/lib/python3.12/site-packages/fastapi/applications.py:4495
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/.venv/lib/python3.12/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+apps/api/main.py:135
+  /media/mohammad-ali/Ali/Clients/CareerPilot AI/apps/api/main.py:135: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_admin.py::test_admin_dashboard_authorized - AttributeError:...
+1 failed, 8 deselected, 30 warnings in 10.36s

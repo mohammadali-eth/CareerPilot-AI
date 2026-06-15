@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { BarChart3, Download, FileSpreadsheet, FileText, Sparkles, Calendar, ArrowLeft, Loader2, AlertTriangle, RefreshCw, Plus, CheckCircle, FileCheck, TrendingUp, Layers, X } from "lucide-react";
+import Link from "next/link";
+import { BarChart3, Download, FileSpreadsheet, FileText, Sparkles, Calendar, ArrowLeft, Loader2, AlertTriangle, RefreshCw, Plus, CheckCircle, FileCheck, TrendingUp, Layers, MessageSquare, X } from "lucide-react";
 import { analyticsService } from "../../../../services/analytics";
 export default function ReportsPage() {
     const [reports, setReports] = useState([]);
@@ -12,7 +13,6 @@ export default function ReportsPage() {
     const [creating, setCreating] = useState(false);
     // Selected report details drawer
     const [selectedReport, setSelectedReport] = useState(null);
-    const [loadingDetails, setLoadingDetails] = useState(false);
     // Export modal state
     const [exportModalReport, setExportModalReport] = useState(null);
     const [exportFormat, setExportFormat] = useState("pdf");

@@ -21,6 +21,7 @@ from models.roadmap import Roadmap, RoadmapMilestone, RoadmapProgress # noqa
 from models.interview import InterviewSession, InterviewQuestion, InterviewAnswer # noqa
 from models.mentor import ChatSession, ChatMessage, ChatExport # noqa
 from models.analytics import AnalyticsReport, AnalyticsSnapshot, UserMetric, ReportExport # noqa
+from models.admin import AuditLog, AdminAction, SystemMetric, AIUsageMetric # noqa
 
 # Alembic Config object representing the INI values
 config = context.config
