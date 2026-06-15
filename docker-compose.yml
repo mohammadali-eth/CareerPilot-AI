@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: careerpilot-postgres
+    environment:
+      POSTGRES_DB: careerpilot_dev
+      POSTGRES_USER: careerpilot_user
+      POSTGRES_PASSWORD: careerpilot_secure_pass_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U careerpilot_user -d careerpilot_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - careerpilot-network
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: careerpilot-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - careerpilot-network
+
+  api:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/api.Dockerfile
+    container_name: careerpilot-api
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://careerpilot_user:careerpilot_secure_pass_2026@postgres:5432/careerpilot_dev
+      - REDIS_URL=redis://redis:6379/0
+      - ENVIRONMENT=development
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/api:/app/apps/api
+    networks:
+      - careerpilot-network
+
+  worker:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/worker.Dockerfile
+    container_name: careerpilot-worker
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://careerpilot_user:careerpilot_secure_pass_2026@postgres:5432/careerpilot_dev
+      - REDIS_URL=redis://redis:6379/0
+      - ENVIRONMENT=development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/api:/app/apps/api
+    networks:
+      - careerpilot-network
+
+networks:
+  careerpilot-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

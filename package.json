@@ -1,0 +1,25 @@
+{
+  "name": "careerpilot-ai",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Enterprise AI-powered Career Mentor and Resume Intelligence Platform",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
+    "test": "turbo test",
+    "test:ui": "turbo test:ui",
+    "clean": "turbo clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "turbo": "^1.13.0"
+  },
+  "packageManager": "pnpm@9.1.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

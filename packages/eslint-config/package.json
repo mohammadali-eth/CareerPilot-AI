@@ -1,0 +1,10 @@
+{
+  "name": "@careerpilot/eslint-config",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "eslint-config-next": "15.0.0-rc.0"
+  }
+}
