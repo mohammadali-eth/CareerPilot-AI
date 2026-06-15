@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     GEMINI_API_KEY: str = ""
     OPENAI_DEFAULT_MODEL: str = "gpt-4o"
-    GEMINI_DEFAULT_MODEL: str = "gemini-1.5-pro"
+    GEMINI_DEFAULT_MODEL: str = "gemini-2.5-flash"
 
     # Monitoring
     SENTRY_DSN: str = ""

@@ -238,6 +238,84 @@ export default function DashboardPage() {
       {/* 3. SUCCESS / EMPTY STATES GRID */}
       {!isLoading && !isError && stats && (
         <div className="space-y-8">
+          {/* Executive Telemetry Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Career Readiness Score Card */}
+            <div className="md:col-span-2 glass-panel p-6 rounded-2xl border border-border flex flex-col md:flex-row items-center justify-between gap-6 hover:border-indigo-400/50 transition-all duration-300">
+              <div className="space-y-2 text-left">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Executive Telemetry Overview</span>
+                <h3 className="font-extrabold text-lg text-slate-800">Unified Career Readiness Index</h3>
+                <p className="text-xs text-muted-foreground max-w-md">
+                  A comprehensive, weighted scorecard evaluating your resume fit, skill gaps, roadmaps completion rates, mock interview performance, and active study streak consistency.
+                </p>
+                <div className="pt-2">
+                  <Link 
+                    href="/dashboard/analytics" 
+                    className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:underline"
+                  >
+                    Open Telemetry Analytics <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+              </div>
+              <div className="relative h-24 w-24 shrink-0 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 p-2 shadow-sm">
+                <svg className="absolute inset-0 transform -rotate-90" viewBox="0 0 36 36">
+                  <path
+                    className="text-slate-100"
+                    strokeWidth="3.5"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    className="text-indigo-600 transition-all duration-1000 ease-out"
+                    strokeWidth="3.5"
+                    strokeDasharray={`${stats.careerReadinessScore || 0}, 100`}
+                    strokeLinecap="round"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+                <div className="flex flex-col items-center justify-center">
+                  <span className="text-xl font-black text-slate-800 leading-none">{stats.careerReadinessScore || 0}%</span>
+                  <span className="text-[7px] font-bold text-slate-400 uppercase tracking-widest mt-1">Readiness</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Growth Score Card */}
+            <div className="glass-panel p-6 rounded-2xl border border-border flex flex-col justify-between hover:border-emerald-400/50 transition-all duration-300">
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Overall Growth Score</span>
+                  <Activity className="h-4.5 w-4.5 text-emerald-500" />
+                </div>
+                <div className="pt-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-extrabold tracking-tight text-slate-850">
+                      +{stats.overallGrowthScore || 0}%
+                    </span>
+                    <span className="text-[9px] px-2 py-0.5 font-bold rounded-md bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 capitalize">
+                      Active
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-2 leading-relaxed">
+                    Growth points accumulated relative to initial baseline career state.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-4 border-t border-border/60 flex items-center justify-between text-[10px] text-slate-400">
+                <span className="flex items-center gap-1 font-semibold text-emerald-600">
+                  <TrendingUp className="h-3 w-3 text-emerald-500" />
+                  Positive trajectory
+                </span>
+                <Link href="/dashboard/reports" className="hover:underline font-bold text-indigo-600">
+                  View Audits
+                </Link>
+              </div>
+            </div>
+          </div>
+
           {/* Metrics Dashboard Row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
             {/* Widget 1: Career Match Score */}

@@ -29,6 +29,10 @@ class User(Base):
     # Relationships
     profile: Mapped["Profile"] = relationship("Profile", back_populates="user", uselist=False, cascade="all, delete-orphan")
     tokens: Mapped[list["AuthToken"]] = relationship("AuthToken", back_populates="user", cascade="all, delete-orphan")
+    analytics_reports: Mapped[list["AnalyticsReport"]] = relationship("AnalyticsReport", back_populates="user", cascade="all, delete-orphan")
+    analytics_snapshots: Mapped[list["AnalyticsSnapshot"]] = relationship("AnalyticsSnapshot", back_populates="user", cascade="all, delete-orphan")
+    metrics: Mapped["UserMetric"] = relationship("UserMetric", back_populates="user", cascade="all, delete-orphan", uselist=False)
+    report_exports: Mapped[list["ReportExport"]] = relationship("ReportExport", back_populates="user", cascade="all, delete-orphan")
 
 
 class Profile(Base):

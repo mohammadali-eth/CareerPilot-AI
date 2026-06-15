@@ -41,6 +41,12 @@ const navigationItems: SidebarItem[] = [
     href: "/dashboard/interview",
     icon: MessageSquare,
   },
+  {
+    name: "AI Career Mentor",
+    href: "/dashboard/mentor",
+    icon: Sparkles,
+  },
+  { name: "Analytics", href: "/dashboard/analytics", icon: TrendingUp },
   { name: "Reports", href: "/dashboard/reports", icon: BarChart3 },
   { name: "Settings", href: "/profile", icon: Settings },
 ];
