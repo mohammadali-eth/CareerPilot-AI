@@ -27,12 +27,14 @@ We use a Git-flow inspired workflow with structured branches and commits:
 ## 🛠️ Code Conventions
 
 ### TypeScript & Frontend
+
 - **Strict Mode:** Always enabled. Avoid `any`. Use custom types, interfaces, or generics.
 - **Component Anatomy:** Ensure components are functional, stateless where possible, and located in their respective `features/` directory unless they are generic `ui/` elements.
 - **Form Handling:** Always wrap forms in React Hook Form + Zod validation schema.
 - **Data Fetching:** Use TanStack Query hooks. Avoid putting `useEffect` for data fetching.
 
 ### Python & Backend
+
 - **Type Hints:** Required everywhere. Every function parameter and return type must be typed.
 - **Asynchronous Code:** Use `async/await` for database operations, HTTP client calls, and network requests.
 - **Architecture Layers:**
@@ -40,6 +42,7 @@ We use a Git-flow inspired workflow with structured branches and commits:
 - **Validation:** Enforce validation rules strictly inside Pydantic v2 schemas.
 
 ## 🧪 Testing Policy
+
 - **Coverage Goal:** Minimum 85% coverage for business logic.
 - **Unit Tests:** Mandatory for all new services, repositories, schemas, and utility functions.
 - **API Tests:** Write integration tests in pytest for all new endpoints using `httpx.AsyncClient`.

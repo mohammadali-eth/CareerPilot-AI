@@ -59,13 +59,21 @@ function LoginContent() {
       <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl shadow-premium border border-border">
         {/* Header */}
         <div className="text-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+          <Link
+            href="/"
+            className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+          >
             CareerPilot AI
           </Link>
-          <h2 className="mt-6 text-3xl font-extrabold tracking-tight">Welcome back</h2>
+          <h2 className="mt-6 text-3xl font-extrabold tracking-tight">
+            Welcome back
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <Link href="/register" className="font-semibold text-primary hover:underline">
+            <Link
+              href="/register"
+              className="font-semibold text-primary hover:underline"
+            >
               Create an account
             </Link>
           </p>
@@ -88,7 +96,10 @@ function LoginContent() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-foreground"
+              >
                 Email address
               </label>
               <input
@@ -96,21 +107,31 @@ function LoginContent() {
                 type="email"
                 autoComplete="email"
                 className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                  errors.email ? "border-destructive focus:ring-destructive/50" : "border-input"
+                  errors.email
+                    ? "border-destructive focus:ring-destructive/50"
+                    : "border-input"
                 }`}
                 {...register("email")}
               />
               {errors.email && (
-                <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
+                <p className="mt-1 text-xs text-destructive">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium text-foreground">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-foreground"
+                >
                   Password
                 </label>
-                <Link href="/forgot-password" className="text-xs font-semibold text-primary hover:underline">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs font-semibold text-primary hover:underline"
+                >
                   Forgot password?
                 </Link>
               </div>
@@ -119,12 +140,16 @@ function LoginContent() {
                 type="password"
                 autoComplete="current-password"
                 className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                  errors.password ? "border-destructive focus:ring-destructive/50" : "border-input"
+                  errors.password
+                    ? "border-destructive focus:ring-destructive/50"
+                    : "border-input"
                 }`}
                 {...register("password")}
               />
               {errors.password && (
-                <p className="mt-1 text-xs text-destructive">{errors.password.message}</p>
+                <p className="mt-1 text-xs text-destructive">
+                  {errors.password.message}
+                </p>
               )}
             </div>
           </div>
@@ -144,11 +169,13 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-[75vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-[75vh]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        </div>
+      }
+    >
       <LoginContent />
     </Suspense>
   );

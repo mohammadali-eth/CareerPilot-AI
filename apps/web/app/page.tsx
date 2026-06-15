@@ -14,7 +14,8 @@ export default function RootPage() {
           CareerPilot AI
         </h1>
         <p className="max-w-2xl mx-auto text-muted-foreground text-lg md:text-xl font-light">
-          An enterprise-grade, clean-architecture framework for AI resume parsing, dynamic roadmapping, and career recommendations.
+          An enterprise-grade, clean-architecture framework for AI resume
+          parsing, dynamic roadmapping, and career recommendations.
         </p>
       </div>
 
@@ -26,7 +27,8 @@ export default function RootPage() {
           </div>
           <h3 className="text-xl font-bold">FastAPI + Asyncpg</h3>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            High-performance asynchronous Python API layer separating concerns via routers, business services, and repositories.
+            High-performance asynchronous Python API layer separating concerns
+            via routers, business services, and repositories.
           </p>
         </div>
 
@@ -36,7 +38,8 @@ export default function RootPage() {
           </div>
           <h3 className="text-xl font-bold">PostgreSQL + pgvector</h3>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Multi-relational database design integrating vector search indexing to power fast similarity matches and intelligence RAG.
+            Multi-relational database design integrating vector search indexing
+            to power fast similarity matches and intelligence RAG.
           </p>
         </div>
 
@@ -46,7 +49,8 @@ export default function RootPage() {
           </div>
           <h3 className="text-xl font-bold">Next.js 15 App Router</h3>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            React 19 Server Components utilizing custom theme configurations, Zod validation, and Zustand state slices.
+            React 19 Server Components utilizing custom theme configurations,
+            Zod validation, and Zustand state slices.
           </p>
         </div>
       </div>
@@ -59,17 +63,30 @@ export default function RootPage() {
             <span className="w-3 h-3 rounded-full bg-yellow-500/70 inline-block" />
             <span className="w-3 h-3 rounded-full bg-green-500/70 inline-block" />
           </div>
-          <span className="text-xs text-muted-foreground font-mono">architecture-verify.log</span>
+          <span className="text-xs text-muted-foreground font-mono">
+            architecture-verify.log
+          </span>
           <Terminal className="h-4 w-4 text-muted-foreground" />
         </div>
         <div className="p-6 text-left font-mono text-xs md:text-sm space-y-2 text-indigo-400 bg-black/40">
           <p className="text-emerald-400">$ pnpm run architecture-verify</p>
-          <p className="text-muted-foreground">Running checks for Clean Architecture principles...</p>
-          <p>✓ Monorepo Workspaces identified: apps/web, apps/api, packages/*</p>
-          <p>✓ Dependency Inversion setup: FastAPI Depends container validated</p>
-          <p>✓ Schema Validation: Pydantic v2 and Client-side Zod models aligned</p>
+          <p className="text-muted-foreground">
+            Running checks for Clean Architecture principles...
+          </p>
+          <p>
+            ✓ Monorepo Workspaces identified: apps/web, apps/api, packages/*
+          </p>
+          <p>
+            ✓ Dependency Inversion setup: FastAPI Depends container validated
+          </p>
+          <p>
+            ✓ Schema Validation: Pydantic v2 and Client-side Zod models aligned
+          </p>
           <p>✓ Similarity Search: pgvector HNSW database indices configured</p>
-          <p className="text-emerald-400">✓ CareerPilot AI foundation successfully loaded [Ready for Feature Phase]</p>
+          <p className="text-emerald-400">
+            ✓ CareerPilot AI foundation successfully loaded [Ready for Feature
+            Phase]
+          </p>
         </div>
       </div>
     </div>

@@ -20,15 +20,23 @@ interface AuthState {
   user: UserProfile | null;
   isAuthenticated: boolean;
   isInitialized: boolean;
-  setAuth: (accessToken: string, refreshToken: string, user: UserProfile) => void;
+  setAuth: (
+    accessToken: string,
+    refreshToken: string,
+    user: UserProfile,
+  ) => void;
   clearAuth: () => void;
   updateUser: (user: Partial<UserProfile>) => void;
   setInitialized: (initialized: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  accessToken: typeof window !== "undefined" ? localStorage.getItem("access_token") : null,
-  refreshToken: typeof window !== "undefined" ? localStorage.getItem("refresh_token") : null,
+  accessToken:
+    typeof window !== "undefined" ? localStorage.getItem("access_token") : null,
+  refreshToken:
+    typeof window !== "undefined"
+      ? localStorage.getItem("refresh_token")
+      : null,
   user: null,
   isAuthenticated: false,
   isInitialized: false,

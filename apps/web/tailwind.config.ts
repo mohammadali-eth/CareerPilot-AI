@@ -89,7 +89,8 @@ const config: Config = {
       boxShadow: {
         glass: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
         "glass-dark": "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
-        premium: "0 20px 40px -15px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)",
+        premium:
+          "0 20px 40px -15px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)",
       },
     },
   },

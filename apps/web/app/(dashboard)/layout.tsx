@@ -29,15 +29,27 @@ interface SidebarItem {
 const navigationItems: SidebarItem[] = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Resume Analyzer", href: "/dashboard/resume", icon: FileText },
-  { name: "Career Match", href: "/dashboard/career-recommendations", icon: Briefcase },
+  {
+    name: "Career Match",
+    href: "/dashboard/career-recommendations",
+    icon: Briefcase,
+  },
   { name: "Skill Gap", href: "/dashboard/skill-gap", icon: TrendingUp },
   { name: "Roadmap", href: "/dashboard/roadmap", icon: Map },
-  { name: "Interview Simulator", href: "/dashboard/interview", icon: MessageSquare },
+  {
+    name: "Interview Simulator",
+    href: "/dashboard/interview",
+    icon: MessageSquare,
+  },
   { name: "Reports", href: "/dashboard/reports", icon: BarChart3 },
   { name: "Settings", href: "/profile", icon: Settings },
 ];
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const logoutMutation = useLogout();
@@ -84,7 +96,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside className="hidden md:flex flex-col w-64 border-r border-border bg-card/50 backdrop-blur-md">
         {/* Brand Header */}
         <div className="h-16 flex items-center px-6 border-b border-border">
-          <Link href="/dashboard" className="flex items-center gap-2.5 font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2.5 font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+          >
             <Sparkles className="h-5 w-5 text-indigo-500" />
             CareerPilot AI
           </Link>
@@ -93,7 +108,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Sidebar Links */}
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
           {navigationItems.map((item) => {
-            const isActive = pathname === item.href || pathname?.startsWith(item.href + "/");
+            const isActive =
+              pathname === item.href || pathname?.startsWith(item.href + "/");
             const Icon = item.icon;
             return (
               <Link
@@ -120,7 +136,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {userInitials}
               </div>
               <div className="truncate max-w-[120px]">
-                <p className="text-sm font-semibold truncate leading-tight">{userName}</p>
+                <p className="text-sm font-semibold truncate leading-tight">
+                  {userName}
+                </p>
                 <span className="text-xs text-muted-foreground capitalize leading-tight">
                   {user.role}
                 </span>
@@ -140,7 +158,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* 2. Mobile Nav Header */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <header className="md:hidden h-16 border-b border-border bg-card/50 backdrop-blur-md flex items-center justify-between px-4 z-30">
-          <Link href="/dashboard" className="flex items-center gap-2 font-bold text-md tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 font-bold text-md tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+          >
             <Sparkles className="h-4 w-4 text-indigo-500" />
             CareerPilot AI
           </Link>
@@ -148,19 +169,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             className="p-2 rounded-lg hover:bg-muted text-muted-foreground focus:outline-none"
           >
-            {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMobileOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
         </header>
 
         {/* Mobile Sidebar overlay */}
         {isMobileOpen && (
-          <div className="md:hidden fixed inset-0 z-20 bg-background/80 backdrop-blur-sm" onClick={() => setIsMobileOpen(false)}>
+          <div
+            className="md:hidden fixed inset-0 z-20 bg-background/80 backdrop-blur-sm"
+            onClick={() => setIsMobileOpen(false)}
+          >
             <aside
               className="fixed top-16 bottom-0 left-0 w-64 border-r border-border bg-card flex flex-col p-4 space-y-1 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {navigationItems.map((item) => {
-                const isActive = pathname === item.href || pathname?.startsWith(item.href + "/");
+                const isActive =
+                  pathname === item.href ||
+                  pathname?.startsWith(item.href + "/");
                 const Icon = item.icon;
                 return (
                   <Link
@@ -178,15 +208,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   </Link>
                 );
               })}
-              
+
               <div className="pt-4 mt-auto border-t border-border flex flex-col gap-2">
                 <div className="flex items-center gap-3 px-3 py-2">
                   <div className="h-8 w-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-xs font-bold text-indigo-400">
                     {userInitials}
                   </div>
                   <div>
-                    <p className="text-xs font-semibold truncate max-w-[120px]">{userName}</p>
-                    <span className="text-[10px] text-muted-foreground capitalize">{user.role}</span>
+                    <p className="text-xs font-semibold truncate max-w-[120px]">
+                      {userName}
+                    </p>
+                    <span className="text-[10px] text-muted-foreground capitalize">
+                      {user.role}
+                    </span>
                   </div>
                 </div>
                 <button

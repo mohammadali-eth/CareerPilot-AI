@@ -31,7 +31,9 @@ tests/
 ```
 
 ### 1.1 Mocking AI Providers
+
 To prevent API token consumption and ensure deterministic test runs:
+
 - We mock the `BaseLLMProvider` using Pytest fixtures.
 - System prompts and parser validation tests use static text fixtures that mimic actual JSON outputs from the LLMs.
 
@@ -40,6 +42,7 @@ To prevent API token consumption and ensure deterministic test runs:
 ## 2. DevOps & Infrastructure
 
 ### 2.1 Docker Configurations
+
 We maintain split Docker targets for Development, Staging, and Production under `infrastructure/docker/`:
 
 - **Development:** Uses local source mounting to enable hot-reloading (FastAPI reload and Next.js HMR).
@@ -57,6 +60,7 @@ We maintain split Docker targets for Development, Staging, and Production under 
 We automate checks on every Pull Request and deploy directly to production upon merges to `main`.
 
 #### CI Pipeline (`.github/workflows/ci.yml`)
+
 1. **Linting & Formatting:** Enforces Code style rules.
    - Runs `ruff check .` and `ruff format --check .` for Python.
    - Runs `eslint` and `prettier --check` for TypeScript/React.
@@ -64,6 +68,7 @@ We automate checks on every Pull Request and deploy directly to production upon 
 3. **Backend Tests:** Runs `pytest --cov=apps/api` using a temporary test Postgres container.
 
 #### CD Pipeline (`.github/workflows/cd.yml`)
+
 - **Trigger:** Merge to `main`.
 - **Target Platforms:**
   - **Vercel:** Deploys the static Next.js build.
@@ -75,10 +80,12 @@ We automate checks on every Pull Request and deploy directly to production upon 
 ## 3. Production Monitoring & Logging
 
 ### 3.1 Sentry Integration
+
 - Sentry SDK is initialized in both `main.py` (FastAPI) and `layout.tsx` (Next.js client-side error boundary).
 - Error boundaries capture uncaught exceptions, inject request traces (allowing tracing from frontend to API calls), and alert the engineering team.
 
 ### 3.2 Structured Logging
+
 - The FastAPI application formats logs as single-line JSON structures using the Python `json-logging` module.
 - Structured logs make it trivial for log aggregators (e.g., Datadog, AWS CloudWatch, Axiom) to parse levels, status codes, user IDs, and duration metrics.
 

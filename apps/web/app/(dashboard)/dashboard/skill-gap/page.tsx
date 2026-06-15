@@ -7,9 +7,12 @@ export default function SkillGapPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Skill Gap Analyzer</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          Skill Gap Analyzer
+        </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Compare your current technical skillset against standard targets for your desired role.
+          Compare your current technical skillset against standard targets for
+          your desired role.
         </p>
       </div>
 
@@ -23,13 +26,15 @@ export default function SkillGapPage() {
             <div className="p-3 bg-rose-500/5 border border-rose-500/10 rounded-lg">
               <h4 className="text-xs font-semibold">Kubernetes / Docker</h4>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                Required in 80% of targeted staff roles. Recommended courses: Docker Mastery.
+                Required in 80% of targeted staff roles. Recommended courses:
+                Docker Mastery.
               </p>
             </div>
             <div className="p-3 bg-rose-500/5 border border-rose-500/10 rounded-lg">
               <h4 className="text-xs font-semibold">GraphQL APIs</h4>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                Target positions require schema setups and query optimization capabilities.
+                Target positions require schema setups and query optimization
+                capabilities.
               </p>
             </div>
           </div>
@@ -44,13 +49,15 @@ export default function SkillGapPage() {
             <div className="p-3 bg-emerald-500/5 border border-emerald-500/10 rounded-lg">
               <h4 className="text-xs font-semibold">TypeScript & React</h4>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                Strong proficiency matched from 4 previous work experience descriptions.
+                Strong proficiency matched from 4 previous work experience
+                descriptions.
               </p>
             </div>
             <div className="p-3 bg-emerald-500/5 border border-emerald-500/10 rounded-lg">
               <h4 className="text-xs font-semibold">SQL & PostgreSQL</h4>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                Database schema migrations and queries verified from resume parsing.
+                Database schema migrations and queries verified from resume
+                parsing.
               </p>
             </div>
           </div>

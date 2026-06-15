@@ -39,14 +39,20 @@ export default function RoadmapPage() {
   const deleteMutation = useDeleteRoadmap();
 
   const [activeRoadmapId, setActiveRoadmapId] = useState<string | null>(null);
-  const [selectedMilestone, setSelectedMilestone] = useState<RoadmapMilestone | null>(null);
+  const [selectedMilestone, setSelectedMilestone] =
+    useState<RoadmapMilestone | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"syllabus" | "phases" | "projects" | "calendar" | "explanations">("syllabus");
+  const [activeTab, setActiveTab] = useState<
+    "syllabus" | "phases" | "projects" | "calendar" | "explanations"
+  >("syllabus");
 
   // Fetch the detailed active roadmap
-  const { data: activeRoadmap, isLoading: isActiveLoading } = useRoadmap(activeRoadmapId);
-  const updateProgressMutation = useUpdateRoadmapProgress(activeRoadmapId || "");
+  const { data: activeRoadmap, isLoading: isActiveLoading } =
+    useRoadmap(activeRoadmapId);
+  const updateProgressMutation = useUpdateRoadmapProgress(
+    activeRoadmapId || "",
+  );
 
   // Auto-select latest roadmap
   useEffect(() => {
@@ -90,7 +96,10 @@ export default function RoadmapPage() {
     setIsDrawerOpen(true);
   };
 
-  const handleUpdateMilestone = async (progress: number, completed: boolean) => {
+  const handleUpdateMilestone = async (
+    progress: number,
+    completed: boolean,
+  ) => {
     if (!activeRoadmapId || !selectedMilestone) return;
     try {
       await updateProgressMutation.mutateAsync({
@@ -99,7 +108,9 @@ export default function RoadmapPage() {
         completed,
       });
       // Update local drawer state
-      setSelectedMilestone((prev) => (prev ? { ...prev, completion_percentage: progress } : null));
+      setSelectedMilestone((prev) =>
+        prev ? { ...prev, completion_percentage: progress } : null,
+      );
     } catch (err) {
       console.error("Failed to update milestone progress:", err);
     }
@@ -124,7 +135,9 @@ export default function RoadmapPage() {
   const ErrorState = ({ message }: { message: string }) => (
     <div className="flex flex-col items-center justify-center p-12 bg-destructive/10 border border-destructive/20 rounded-xl text-center">
       <AlertCircle className="h-10 w-10 text-destructive mb-4" />
-      <h3 className="text-lg font-bold text-foreground mb-1">Failed to load roadmaps</h3>
+      <h3 className="text-lg font-bold text-foreground mb-1">
+        Failed to load roadmaps
+      </h3>
       <p className="text-sm text-muted-foreground mb-4">{message}</p>
       <button
         onClick={() => window.location.reload()}
@@ -141,7 +154,8 @@ export default function RoadmapPage() {
       <Map className="h-14 w-14 text-muted-foreground mb-6" />
       <h2 className="text-xl font-bold mb-2">No roadmaps generated yet</h2>
       <p className="text-sm text-muted-foreground max-w-md mb-8">
-        Unlock your custom learning path by entering your target career and timeline details. We will scan your skills gaps to assemble a roadmap.
+        Unlock your custom learning path by entering your target career and
+        timeline details. We will scan your skills gaps to assemble a roadmap.
       </p>
       <button
         onClick={() => setIsFormOpen(true)}
@@ -205,7 +219,9 @@ export default function RoadmapPage() {
           </div>
           <div>
             <h3 className="text-lg font-bold">Generate Personalized Roadmap</h3>
-            <p className="text-sm text-muted-foreground">Custom syllabus built against your specific skill gap</p>
+            <p className="text-sm text-muted-foreground">
+              Custom syllabus built against your specific skill gap
+            </p>
           </div>
         </div>
 
@@ -240,7 +256,9 @@ export default function RoadmapPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold">Weekly Study Hours</label>
+              <label className="text-sm font-semibold">
+                Weekly Study Hours
+              </label>
               <select
                 value={weeklyHours}
                 onChange={(e) => setWeeklyHours(Number(e.target.value))}
@@ -256,20 +274,26 @@ export default function RoadmapPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-semibold">Current Experience Level</label>
+              <label className="text-sm font-semibold">
+                Current Experience Level
+              </label>
               <select
                 value={experienceLevel}
                 onChange={(e) => setExperienceLevel(e.target.value)}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none"
               >
                 <option value="Beginner">Beginner (No prior work)</option>
-                <option value="Intermediate">Intermediate (Basic project knowledge)</option>
+                <option value="Intermediate">
+                  Intermediate (Basic project knowledge)
+                </option>
                 <option value="Advanced">Advanced (Proficient engineer)</option>
               </select>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold">Learning Style Preference</label>
+              <label className="text-sm font-semibold">
+                Learning Style Preference
+              </label>
               <select
                 value={learningStyle}
                 onChange={(e) => setLearningStyle(e.target.value)}
@@ -297,7 +321,9 @@ export default function RoadmapPage() {
               disabled={isSubmitting}
               className="px-5 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-lg hover:bg-primary/95 transition-all flex items-center gap-2"
             >
-              {isSubmitting && <span className="animate-spin h-4 w-4 border-2 border-primary-foreground border-b-transparent rounded-full" />}
+              {isSubmitting && (
+                <span className="animate-spin h-4 w-4 border-2 border-primary-foreground border-b-transparent rounded-full" />
+              )}
               {isSubmitting ? "Assembling Path..." : "Build Roadmap"}
             </button>
           </div>
@@ -319,7 +345,9 @@ export default function RoadmapPage() {
     onDelete: (id: string, e: any) => void;
   }) => (
     <div className="bg-card border border-border rounded-xl p-4 space-y-4">
-      <h4 className="text-sm font-bold tracking-wide text-muted-foreground uppercase px-2">Roadmap Logs</h4>
+      <h4 className="text-sm font-bold tracking-wide text-muted-foreground uppercase px-2">
+        Roadmap Logs
+      </h4>
       <div className="space-y-1.5">
         {list.map((r) => {
           const isActive = r.id === activeId;
@@ -334,8 +362,12 @@ export default function RoadmapPage() {
               }`}
             >
               <div className="truncate pr-4">
-                <p className="text-sm font-semibold truncate">{r.target_career}</p>
-                <span className="text-[11px] opacity-75">{r.timeline} • {new Date(r.created_at).toLocaleDateString()}</span>
+                <p className="text-sm font-semibold truncate">
+                  {r.target_career}
+                </p>
+                <span className="text-[11px] opacity-75">
+                  {r.timeline} • {new Date(r.created_at).toLocaleDateString()}
+                </span>
               </div>
               <button
                 onClick={(e) => onDelete(r.id, e)}
@@ -372,14 +404,22 @@ export default function RoadmapPage() {
         </div>
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <span className="text-xs text-muted-foreground">Timeline target</span>
+            <span className="text-xs text-muted-foreground">
+              Timeline target
+            </span>
             <p className="font-semibold text-sm">{roadmap.timeline}</p>
           </div>
-          <div className={`p-4 rounded-xl flex items-center gap-2 ${successColor}`}>
+          <div
+            className={`p-4 rounded-xl flex items-center gap-2 ${successColor}`}
+          >
             <Target className="h-5 w-5" />
             <div>
-              <span className="block text-[10px] uppercase font-bold leading-none">Success Chance</span>
-              <span className="text-lg font-bold">{roadmap.roadmap_data.success_probability}%</span>
+              <span className="block text-[10px] uppercase font-bold leading-none">
+                Success Chance
+              </span>
+              <span className="text-lg font-bold">
+                {roadmap.roadmap_data.success_probability}%
+              </span>
             </div>
           </div>
         </div>
@@ -392,26 +432,49 @@ export default function RoadmapPage() {
     // Calculate milestone counts and complete percentage
     const milestones = roadmap.milestones || [];
     const total = milestones.length;
-    const completed = milestones.filter((m) => m.completion_percentage >= 100).length;
-    const avgProgress = total ? Math.min(100, Math.max(0, Math.floor(milestones.reduce((acc, m) => acc + m.completion_percentage, 0) / total))) : 0;
-    
+    const completed = milestones.filter(
+      (m) => m.completion_percentage >= 100,
+    ).length;
+    const avgProgress = total
+      ? Math.min(
+          100,
+          Math.max(
+            0,
+            Math.floor(
+              milestones.reduce((acc, m) => acc + m.completion_percentage, 0) /
+                total,
+            ),
+          ),
+        )
+      : 0;
+
     // Streak and Skills count
-    const skillsCount = roadmap.roadmap_data.learning_phases.reduce((acc, p) => acc + p.skills_covered.length, 0);
+    const skillsCount = roadmap.roadmap_data.learning_phases.reduce(
+      (acc, p) => acc + p.skills_covered.length,
+      0,
+    );
 
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-xl p-4 space-y-1">
-          <span className="text-xs font-semibold text-muted-foreground">Syllabus Completion</span>
+          <span className="text-xs font-semibold text-muted-foreground">
+            Syllabus Completion
+          </span>
           <div className="flex items-center justify-between gap-4">
             <span className="text-2xl font-bold">{avgProgress}%</span>
             <div className="w-12 h-1.5 bg-muted rounded-full overflow-hidden">
-              <div className="h-full bg-primary" style={{ width: `${avgProgress}%` }} />
+              <div
+                className="h-full bg-primary"
+                style={{ width: `${avgProgress}%` }}
+              />
             </div>
           </div>
         </div>
 
         <div className="bg-card border border-border rounded-xl p-4 space-y-1">
-          <span className="text-xs font-semibold text-muted-foreground">Milestones Achieved</span>
+          <span className="text-xs font-semibold text-muted-foreground">
+            Milestones Achieved
+          </span>
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold">{completed}</span>
             <span className="text-sm text-muted-foreground">/ {total}</span>
@@ -419,7 +482,9 @@ export default function RoadmapPage() {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-4 space-y-1">
-          <span className="text-xs font-semibold text-muted-foreground">Skills covered</span>
+          <span className="text-xs font-semibold text-muted-foreground">
+            Skills covered
+          </span>
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold">{skillsCount}</span>
             <span className="text-sm text-muted-foreground">Skills</span>
@@ -427,10 +492,14 @@ export default function RoadmapPage() {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-4 space-y-1">
-          <span className="text-xs font-semibold text-muted-foreground">Target Completion</span>
+          <span className="text-xs font-semibold text-muted-foreground">
+            Target Completion
+          </span>
           <div className="flex items-center gap-2 text-sm font-medium">
             <CalendarDays className="h-4 w-4 text-primary shrink-0" />
-            <span className="truncate">{new Date(roadmap.estimated_completion).toLocaleDateString()}</span>
+            <span className="truncate">
+              {new Date(roadmap.estimated_completion).toLocaleDateString()}
+            </span>
           </div>
         </div>
       </div>
@@ -461,8 +530,8 @@ export default function RoadmapPage() {
                   isDone
                     ? "bg-emerald-500 border-emerald-500 ring-4 ring-emerald-500/15"
                     : m.completion_percentage > 0
-                    ? "bg-primary border-primary ring-4 ring-primary/15"
-                    : "bg-background border-border"
+                      ? "bg-primary border-primary ring-4 ring-primary/15"
+                      : "bg-background border-border"
                 }`}
               />
               <div
@@ -470,13 +539,21 @@ export default function RoadmapPage() {
                 className="p-4 bg-background/50 hover:bg-muted/30 border border-border rounded-lg cursor-pointer transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
                 <div>
-                  <h4 className="text-sm font-bold group-hover:text-primary transition-colors">{m.title}</h4>
-                  <p className="text-xs text-muted-foreground mt-0.5">{m.description}</p>
+                  <h4 className="text-sm font-bold group-hover:text-primary transition-colors">
+                    {m.title}
+                  </h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {m.description}
+                  </p>
                 </div>
                 <div className="flex items-center gap-4 shrink-0">
                   <div className="text-right">
-                    <span className="text-[10px] text-muted-foreground block">Target date</span>
-                    <span className="text-xs font-semibold">{new Date(m.target_date).toLocaleDateString()}</span>
+                    <span className="text-[10px] text-muted-foreground block">
+                      Target date
+                    </span>
+                    <span className="text-xs font-semibold">
+                      {new Date(m.target_date).toLocaleDateString()}
+                    </span>
                   </div>
                   <div className="px-2.5 py-1 rounded-md bg-muted text-xs font-bold min-w-[50px] text-center">
                     {m.completion_percentage}%
@@ -493,7 +570,9 @@ export default function RoadmapPage() {
 
   // 9. WeeklyPlanCard Component
   const WeeklyPlanCard = ({ tasks }: { tasks: WeeklyTask[] }) => {
-    const [expandedWeeks, setExpandedWeeks] = useState<Record<number, boolean>>({ 1: true });
+    const [expandedWeeks, setExpandedWeeks] = useState<Record<number, boolean>>(
+      { 1: true },
+    );
 
     const toggleWeek = (num: number) => {
       setExpandedWeeks((prev) => ({ ...prev, [num]: !prev[num] }));
@@ -504,22 +583,36 @@ export default function RoadmapPage() {
         {tasks.map((wt) => {
           const isOpen = expandedWeeks[wt.week_number];
           return (
-            <div key={wt.week_number} className="bg-card border border-border rounded-xl overflow-hidden">
+            <div
+              key={wt.week_number}
+              className="bg-card border border-border rounded-xl overflow-hidden"
+            >
               <button
                 onClick={() => toggleWeek(wt.week_number)}
                 className="w-full flex items-center justify-between p-4 bg-muted/20 font-semibold text-sm border-b border-border/50 text-left"
               >
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded bg-primary/10 text-primary text-xs font-bold">Week {wt.week_number}</span>
-                  <span className="truncate max-w-[200px] md:max-w-md">{wt.theme}</span>
+                  <span className="px-2 py-0.5 rounded bg-primary/10 text-primary text-xs font-bold">
+                    Week {wt.week_number}
+                  </span>
+                  <span className="truncate max-w-[200px] md:max-w-md">
+                    {wt.theme}
+                  </span>
                 </div>
-                {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                {isOpen ? (
+                  <ChevronUp className="h-4 w-4" />
+                ) : (
+                  <ChevronDown className="h-4 w-4" />
+                )}
               </button>
 
               {isOpen && (
                 <div className="p-4 space-y-2.5 bg-card">
                   {wt.tasks.map((task, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs text-muted-foreground">
+                    <div
+                      key={idx}
+                      className="flex items-start gap-2.5 text-xs text-muted-foreground"
+                    >
                       <input
                         type="checkbox"
                         className="rounded border-border text-primary focus:ring-primary h-4 w-4 mt-0.5 shrink-0"
@@ -540,19 +633,29 @@ export default function RoadmapPage() {
   const MonthlyGoalCard = ({ goals }: { goals: any[] }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {goals.map((g, idx) => (
-        <div key={idx} className="bg-card border border-border rounded-xl p-5 space-y-3">
+        <div
+          key={idx}
+          className="bg-card border border-border rounded-xl p-5 space-y-3"
+        >
           <div className="flex items-center gap-2">
             <span className="h-7 w-7 rounded bg-indigo-500/10 text-indigo-500 text-xs font-bold flex items-center justify-center">
               M{g.month_number}
             </span>
             <h4 className="text-sm font-bold">Month {g.month_number} Goal</h4>
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">{g.goal}</p>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            {g.goal}
+          </p>
           <div className="pt-2.5 border-t border-border/50">
-            <span className="text-[10px] font-bold text-muted-foreground block uppercase mb-1.5">Focus Areas</span>
+            <span className="text-[10px] font-bold text-muted-foreground block uppercase mb-1.5">
+              Focus Areas
+            </span>
             <ul className="space-y-1">
               {g.focus_areas.map((fa: string, i: number) => (
-                <li key={i} className="text-[11px] text-muted-foreground flex items-center gap-1.5">
+                <li
+                  key={i}
+                  className="text-[11px] text-muted-foreground flex items-center gap-1.5"
+                >
                   <span className="h-1 w-1 bg-indigo-500 rounded-full shrink-0" />
                   {fa}
                 </li>
@@ -568,9 +671,14 @@ export default function RoadmapPage() {
   const LearningPathCard = ({ phases }: { phases: LearningPhase[] }) => (
     <div className="space-y-4">
       {phases.map((lp) => (
-        <div key={lp.phase_number} className="bg-card border border-border rounded-xl p-6 flex flex-col md:flex-row gap-6">
+        <div
+          key={lp.phase_number}
+          className="bg-card border border-border rounded-xl p-6 flex flex-col md:flex-row gap-6"
+        >
           <div className="md:w-1/4 space-y-1">
-            <span className="px-2 py-0.5 rounded bg-primary/10 text-primary text-xs font-bold">Phase {lp.phase_number}</span>
+            <span className="px-2 py-0.5 rounded bg-primary/10 text-primary text-xs font-bold">
+              Phase {lp.phase_number}
+            </span>
             <h4 className="font-bold text-sm">{lp.title}</h4>
             <span className="text-xs text-muted-foreground flex items-center gap-1">
               <Clock className="h-3 w-3" />
@@ -578,10 +686,15 @@ export default function RoadmapPage() {
             </span>
           </div>
           <div className="flex-1 space-y-4">
-            <p className="text-xs text-muted-foreground leading-relaxed">{lp.description}</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {lp.description}
+            </p>
             <div className="flex flex-wrap gap-1.5">
               {lp.skills_covered.map((skill) => (
-                <span key={skill} className="px-2 py-0.5 rounded bg-muted text-[11px] font-semibold text-muted-foreground">
+                <span
+                  key={skill}
+                  className="px-2 py-0.5 rounded bg-muted text-[11px] font-semibold text-muted-foreground"
+                >
                   {skill}
                 </span>
               ))}
@@ -593,7 +706,11 @@ export default function RoadmapPage() {
   );
 
   // 12. ProjectRecommendationCard Component
-  const ProjectRecommendationCard = ({ projects }: { projects: ProjectRecommendation[] }) => (
+  const ProjectRecommendationCard = ({
+    projects,
+  }: {
+    projects: ProjectRecommendation[];
+  }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {projects.map((proj, idx) => {
         const diffColors = {
@@ -604,15 +721,22 @@ export default function RoadmapPage() {
         };
 
         return (
-          <div key={idx} className="bg-card border border-border rounded-xl p-5 space-y-4 flex flex-col justify-between">
+          <div
+            key={idx}
+            className="bg-card border border-border rounded-xl p-5 space-y-4 flex flex-col justify-between"
+          >
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-2">
                 <h4 className="text-sm font-bold">{proj.title}</h4>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${diffColors[proj.difficulty]}`}>
+                <span
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold ${diffColors[proj.difficulty]}`}
+                >
                   {proj.difficulty}
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">{proj.why_recommended}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {proj.why_recommended}
+              </p>
               <div className="pt-2 text-xs text-muted-foreground">
                 <span className="font-bold block mb-1">Portfolio Value:</span>
                 <span className="italic">"{proj.portfolio_value}"</span>
@@ -622,7 +746,10 @@ export default function RoadmapPage() {
               <span>Duration: {proj.estimated_duration}</span>
               <div className="flex gap-1.5">
                 {proj.skills_covered.slice(0, 2).map((s) => (
-                  <span key={s} className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-medium">
+                  <span
+                    key={s}
+                    className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-medium"
+                  >
                     {s}
                   </span>
                 ))}
@@ -635,7 +762,11 @@ export default function RoadmapPage() {
   );
 
   // 13. CertificationCard Component
-  const CertificationCard = ({ certs }: { certs: CertificationRecommendation[] }) => (
+  const CertificationCard = ({
+    certs,
+  }: {
+    certs: CertificationRecommendation[];
+  }) => (
     <div className="space-y-4">
       {certs.map((c, idx) => {
         const priorityColors = {
@@ -645,22 +776,32 @@ export default function RoadmapPage() {
         };
 
         return (
-          <div key={idx} className="bg-card border border-border rounded-xl p-5 flex flex-col md:flex-row items-start justify-between gap-4">
+          <div
+            key={idx}
+            className="bg-card border border-border rounded-xl p-5 flex flex-col md:flex-row items-start justify-between gap-4"
+          >
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Award className="h-4 w-4 text-primary" />
                 <h4 className="text-sm font-bold">{c.title}</h4>
-                <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${priorityColors[c.priority_level]}`}>
+                <span
+                  className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${priorityColors[c.priority_level]}`}
+                >
                   {c.priority_level} Priority
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">{c.reason_for_recommendation}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {c.reason_for_recommendation}
+              </p>
               <div className="text-[11px] text-muted-foreground">
-                <span className="font-bold">Estimated effort:</span> {c.estimated_completion_time}
+                <span className="font-bold">Estimated effort:</span>{" "}
+                {c.estimated_completion_time}
               </div>
             </div>
             <div className="text-right shrink-0">
-              <span className="text-[9px] uppercase font-bold text-muted-foreground block">Career Impact</span>
+              <span className="text-[9px] uppercase font-bold text-muted-foreground block">
+                Career Impact
+              </span>
               <span className="text-xs font-semibold">{c.career_impact}</span>
             </div>
           </div>
@@ -678,26 +819,40 @@ export default function RoadmapPage() {
       <div className="bg-card border border-border rounded-xl p-6 space-y-6">
         <div className="flex items-center gap-2">
           <Calendar className="h-4 w-4 text-primary" />
-          <h3 className="text-md font-bold">Timeline Calendar (Monthly Targets)</h3>
+          <h3 className="text-md font-bold">
+            Timeline Calendar (Monthly Targets)
+          </h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {roadmap.roadmap_data.monthly_goals.map((goal, idx) => {
             // Find milestones or week items belonging to this month (4 weeks per month)
             const monthWeeks = tasks.filter(
-              (w) => w.week_number > idx * 4 && w.week_number <= (idx + 1) * 4
+              (w) => w.week_number > idx * 4 && w.week_number <= (idx + 1) * 4,
             );
 
             return (
-              <div key={idx} className="border border-border bg-background rounded-lg p-4 space-y-4">
+              <div
+                key={idx}
+                className="border border-border bg-background rounded-lg p-4 space-y-4"
+              >
                 <div className="flex items-center justify-between border-b border-border pb-2">
-                  <span className="text-xs font-bold text-primary">Month {goal.month_number}</span>
-                  <span className="text-[10px] text-muted-foreground">{monthWeeks.length} Weeks</span>
+                  <span className="text-xs font-bold text-primary">
+                    Month {goal.month_number}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">
+                    {monthWeeks.length} Weeks
+                  </span>
                 </div>
                 <p className="text-xs font-semibold truncate">{goal.goal}</p>
                 <div className="space-y-2">
                   {monthWeeks.map((week) => (
-                    <div key={week.week_number} className="p-2 rounded bg-muted/30 text-[11px] flex justify-between items-center">
-                      <span className="truncate pr-2">W{week.week_number}: {week.theme}</span>
+                    <div
+                      key={week.week_number}
+                      className="p-2 rounded bg-muted/30 text-[11px] flex justify-between items-center"
+                    >
+                      <span className="truncate pr-2">
+                        W{week.week_number}: {week.theme}
+                      </span>
                       <span className="text-[9px] bg-muted px-1.5 py-0.5 rounded font-mono shrink-0">
                         Task list
                       </span>
@@ -715,7 +870,9 @@ export default function RoadmapPage() {
   // 15. RoadmapDetailsDrawer Component
   const RoadmapDetailsDrawer = () => {
     if (!selectedMilestone) return null;
-    const [progressVal, setProgressVal] = useState(selectedMilestone.completion_percentage);
+    const [progressVal, setProgressVal] = useState(
+      selectedMilestone.completion_percentage,
+    );
 
     useEffect(() => {
       setProgressVal(selectedMilestone.completion_percentage);
@@ -739,12 +896,18 @@ export default function RoadmapPage() {
 
           <div className="space-y-4">
             <div>
-              <h4 className="text-sm font-bold text-foreground">{selectedMilestone.title}</h4>
-              <p className="text-xs text-muted-foreground mt-1">{selectedMilestone.description}</p>
+              <h4 className="text-sm font-bold text-foreground">
+                {selectedMilestone.title}
+              </h4>
+              <p className="text-xs text-muted-foreground mt-1">
+                {selectedMilestone.description}
+              </p>
             </div>
 
             <div className="bg-muted/30 p-4 rounded-lg space-y-1">
-              <span className="text-[10px] text-muted-foreground block uppercase font-bold">Due Target</span>
+              <span className="text-[10px] text-muted-foreground block uppercase font-bold">
+                Due Target
+              </span>
               <span className="text-xs font-semibold text-foreground">
                 {new Date(selectedMilestone.target_date).toLocaleDateString()}
               </span>
@@ -752,7 +915,9 @@ export default function RoadmapPage() {
 
             <div className="space-y-3 pt-4 border-t border-border">
               <div className="flex justify-between items-center text-xs">
-                <span className="font-bold text-muted-foreground">Adjust Completion Percentage</span>
+                <span className="font-bold text-muted-foreground">
+                  Adjust Completion Percentage
+                </span>
                 <span className="font-bold text-primary">{progressVal}%</span>
               </div>
               <input
@@ -792,7 +957,8 @@ export default function RoadmapPage() {
   // --- CORE RENDER METHOD ---
 
   if (isLoading) return <LoadingState />;
-  if (isError) return <ErrorState message={error?.message || "Unknown error"} />;
+  if (isError)
+    return <ErrorState message={error?.message || "Unknown error"} />;
 
   return (
     <div className="space-y-8 relative">
@@ -804,7 +970,8 @@ export default function RoadmapPage() {
             Personalized Roadmaps
           </h1>
           <p className="text-sm text-muted-foreground">
-            Structured learning plans and project targets generated by scanning your ATS gaps.
+            Structured learning plans and project targets generated by scanning
+            your ATS gaps.
           </p>
         </div>
         {!isFormOpen && (
@@ -848,7 +1015,9 @@ export default function RoadmapPage() {
               <div className="lg:col-span-3 space-y-6">
                 {isActiveLoading ? (
                   <div className="h-64 bg-card border border-border rounded-xl animate-pulse flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">Loading details...</span>
+                    <span className="text-xs text-muted-foreground">
+                      Loading details...
+                    </span>
                   </div>
                 ) : activeRoadmap ? (
                   <>
@@ -924,13 +1093,25 @@ export default function RoadmapPage() {
                         <div className="transition-all duration-150">
                           {activeTab === "syllabus" && (
                             <div className="space-y-6">
-                              <MonthlyGoalCard goals={activeRoadmap.roadmap_data.monthly_goals || []} />
-                              <WeeklyPlanCard tasks={activeRoadmap.roadmap_data.weekly_tasks || []} />
+                              <MonthlyGoalCard
+                                goals={
+                                  activeRoadmap.roadmap_data.monthly_goals || []
+                                }
+                              />
+                              <WeeklyPlanCard
+                                tasks={
+                                  activeRoadmap.roadmap_data.weekly_tasks || []
+                                }
+                              />
                             </div>
                           )}
 
                           {activeTab === "phases" && (
-                            <LearningPathCard phases={activeRoadmap.roadmap_data.learning_phases || []} />
+                            <LearningPathCard
+                              phases={
+                                activeRoadmap.roadmap_data.learning_phases || []
+                              }
+                            />
                           )}
 
                           {activeTab === "projects" && (
@@ -939,26 +1120,58 @@ export default function RoadmapPage() {
                                 <Award className="h-4 w-4 text-primary" />
                                 Recommended Projects & Certifications
                               </h3>
-                              <ProjectRecommendationCard projects={activeRoadmap.roadmap_data.projects || []} />
-                              <CertificationCard certs={activeRoadmap.roadmap_data.certifications || []} />
+                              <ProjectRecommendationCard
+                                projects={
+                                  activeRoadmap.roadmap_data.projects || []
+                                }
+                              />
+                              <CertificationCard
+                                certs={
+                                  activeRoadmap.roadmap_data.certifications ||
+                                  []
+                                }
+                              />
                             </div>
                           )}
 
-                          {activeTab === "calendar" && <RoadmapCalendar roadmap={activeRoadmap} />}
+                          {activeTab === "calendar" && (
+                            <RoadmapCalendar roadmap={activeRoadmap} />
+                          )}
 
                           {activeTab === "explanations" && (
                             <div className="bg-card border border-border rounded-xl p-6 space-y-4 text-xs leading-relaxed text-muted-foreground">
                               <div className="space-y-1">
-                                <span className="font-bold text-foreground block text-sm">Why Milestones Exist</span>
-                                <p>{activeRoadmap.roadmap_data.why_milestones_exist_explanation}</p>
+                                <span className="font-bold text-foreground block text-sm">
+                                  Why Milestones Exist
+                                </span>
+                                <p>
+                                  {
+                                    activeRoadmap.roadmap_data
+                                      .why_milestones_exist_explanation
+                                  }
+                                </p>
                               </div>
                               <div className="space-y-1 pt-3 border-t border-border">
-                                <span className="font-bold text-foreground block text-sm">Technology Order Logic</span>
-                                <p>{activeRoadmap.roadmap_data.why_skills_ordered_explanation}</p>
+                                <span className="font-bold text-foreground block text-sm">
+                                  Technology Order Logic
+                                </span>
+                                <p>
+                                  {
+                                    activeRoadmap.roadmap_data
+                                      .why_skills_ordered_explanation
+                                  }
+                                </p>
                               </div>
                               <div className="space-y-1 pt-3 border-t border-border">
-                                <span className="font-bold text-foreground block text-sm">Employability Impact</span>
-                                <p>{activeRoadmap.roadmap_data.employability_impact_explanation}</p>
+                                <span className="font-bold text-foreground block text-sm">
+                                  Employability Impact
+                                </span>
+                                <p>
+                                  {
+                                    activeRoadmap.roadmap_data
+                                      .employability_impact_explanation
+                                  }
+                                </p>
                               </div>
                             </div>
                           )}

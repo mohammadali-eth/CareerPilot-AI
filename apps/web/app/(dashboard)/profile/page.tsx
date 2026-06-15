@@ -21,7 +21,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const logoutMutation = useLogout();
   const updateProfileMutation = useUpdateProfile();
-  
+
   // Select state from store
   const { user, accessToken, isInitialized } = useAuthStore();
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -57,7 +57,8 @@ export default function ProfilePage() {
         first_name: user.profile?.first_name || "",
         last_name: user.profile?.last_name || "",
         target_role: user.profile?.target_role || "",
-        current_experience_level: user.profile?.current_experience_level || "mid",
+        current_experience_level:
+          user.profile?.current_experience_level || "mid",
       });
     }
   }, [user, reset]);
@@ -95,7 +96,9 @@ export default function ProfilePage() {
       {/* Top Banner Dashboard Navigation */}
       <div className="flex items-center justify-between border-b border-border pb-5">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Account Settings</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Account Settings
+          </h1>
           <p className="text-sm text-muted-foreground mt-1">
             Manage your CareerPilot AI identity and target profile parameters.
           </p>
@@ -113,21 +116,29 @@ export default function ProfilePage() {
         <div className="space-y-6">
           <div className="glass-panel p-6 rounded-xl border border-border space-y-4">
             <h3 className="font-bold text-lg">System Metadata</h3>
-            
+
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground block">Email Address</span>
-              <span className="text-sm font-medium break-all">{user.email}</span>
+              <span className="text-xs text-muted-foreground block">
+                Email Address
+              </span>
+              <span className="text-sm font-medium break-all">
+                {user.email}
+              </span>
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground block">RBAC Scope / Role</span>
+              <span className="text-xs text-muted-foreground block">
+                RBAC Scope / Role
+              </span>
               <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-primary/10 text-primary border border-primary/20 capitalize">
                 {user.role}
               </span>
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground block">Verification Status</span>
+              <span className="text-xs text-muted-foreground block">
+                Verification Status
+              </span>
               {user.is_verified ? (
                 <span className="text-xs text-emerald-500 font-semibold flex items-center gap-1">
                   ✓ Verified Account
@@ -140,7 +151,9 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs text-muted-foreground block">Active Status</span>
+              <span className="text-xs text-muted-foreground block">
+                Active Status
+              </span>
               <span className="text-xs text-emerald-500 font-semibold">
                 ● Active Connection
               </span>
@@ -168,7 +181,10 @@ export default function ProfilePage() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="first_name" className="block text-sm font-medium text-foreground">
+                  <label
+                    htmlFor="first_name"
+                    className="block text-sm font-medium text-foreground"
+                  >
                     First Name
                   </label>
                   <input
@@ -178,12 +194,17 @@ export default function ProfilePage() {
                     {...register("first_name")}
                   />
                   {errors.first_name && (
-                    <p className="mt-1 text-xs text-destructive">{errors.first_name.message}</p>
+                    <p className="mt-1 text-xs text-destructive">
+                      {errors.first_name.message}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="last_name" className="block text-sm font-medium text-foreground">
+                  <label
+                    htmlFor="last_name"
+                    className="block text-sm font-medium text-foreground"
+                  >
                     Last Name
                   </label>
                   <input
@@ -193,13 +214,18 @@ export default function ProfilePage() {
                     {...register("last_name")}
                   />
                   {errors.last_name && (
-                    <p className="mt-1 text-xs text-destructive">{errors.last_name.message}</p>
+                    <p className="mt-1 text-xs text-destructive">
+                      {errors.last_name.message}
+                    </p>
                   )}
                 </div>
               </div>
 
               <div>
-                <label htmlFor="target_role" className="block text-sm font-medium text-foreground">
+                <label
+                  htmlFor="target_role"
+                  className="block text-sm font-medium text-foreground"
+                >
                   Target Career Role
                 </label>
                 <input
@@ -210,12 +236,17 @@ export default function ProfilePage() {
                   {...register("target_role")}
                 />
                 {errors.target_role && (
-                  <p className="mt-1 text-xs text-destructive">{errors.target_role.message}</p>
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.target_role.message}
+                  </p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="current_experience_level" className="block text-sm font-medium text-foreground">
+                <label
+                  htmlFor="current_experience_level"
+                  className="block text-sm font-medium text-foreground"
+                >
                   Experience Level
                 </label>
                 <select
@@ -229,7 +260,9 @@ export default function ProfilePage() {
                   <option value="lead">Lead / Principal (8+ years)</option>
                 </select>
                 {errors.current_experience_level && (
-                  <p className="mt-1 text-xs text-destructive">{errors.current_experience_level.message}</p>
+                  <p className="mt-1 text-xs text-destructive">
+                    {errors.current_experience_level.message}
+                  </p>
                 )}
               </div>
 

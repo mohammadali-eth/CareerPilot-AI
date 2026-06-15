@@ -16,7 +16,10 @@ type ForgotFormValues = z.infer<typeof forgotSchema>;
 export default function ForgotPasswordPage() {
   const forgotMutation = useForgotPassword();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successData, setSuccessData] = useState<{ message: string; reset_token?: string } | null>(null);
+  const [successData, setSuccessData] = useState<{
+    message: string;
+    reset_token?: string;
+  } | null>(null);
 
   const {
     register,
@@ -36,7 +39,9 @@ export default function ForgotPasswordPage() {
       const result = await forgotMutation.mutateAsync(data);
       setSuccessData(result);
     } catch (err: any) {
-      setErrorMessage(err.message || "Failed to process request. Please try again.");
+      setErrorMessage(
+        err.message || "Failed to process request. Please try again.",
+      );
     }
   };
 
@@ -45,10 +50,15 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl shadow-premium border border-border">
         {/* Header */}
         <div className="text-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+          <Link
+            href="/"
+            className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+          >
             CareerPilot AI
           </Link>
-          <h2 className="mt-6 text-3xl font-extrabold tracking-tight">Reset your password</h2>
+          <h2 className="mt-6 text-3xl font-extrabold tracking-tight">
+            Reset your password
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
             We will generate a reset token to help you configure a new password.
           </p>
@@ -68,7 +78,9 @@ export default function ForgotPasswordPage() {
 
             {successData.reset_token && (
               <div className="p-4 bg-purple-500/5 border border-purple-500/10 rounded-lg text-left text-xs font-mono space-y-2">
-                <p className="text-purple-400 font-semibold">Simulated Reset Link:</p>
+                <p className="text-purple-400 font-semibold">
+                  Simulated Reset Link:
+                </p>
                 <Link
                   href={`/reset-password?token=${successData.reset_token}`}
                   className="text-primary hover:underline break-all block"
@@ -79,7 +91,10 @@ export default function ForgotPasswordPage() {
             )}
 
             <div className="pt-2">
-              <Link href="/login" className="text-sm font-semibold text-primary hover:underline">
+              <Link
+                href="/login"
+                className="text-sm font-semibold text-primary hover:underline"
+              >
                 Back to Sign in
               </Link>
             </div>
@@ -87,19 +102,26 @@ export default function ForgotPasswordPage() {
         ) : (
           <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-foreground"
+              >
                 Email address
               </label>
               <input
                 id="email"
                 type="email"
                 className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                  errors.email ? "border-destructive focus:ring-destructive/50" : "border-input"
+                  errors.email
+                    ? "border-destructive focus:ring-destructive/50"
+                    : "border-input"
                 }`}
                 {...register("email")}
               />
               {errors.email && (
-                <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
+                <p className="mt-1 text-xs text-destructive">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -112,7 +134,10 @@ export default function ForgotPasswordPage() {
                 {isSubmitting ? "Generating link..." : "Send Reset Token"}
               </button>
               <div className="text-center">
-                <Link href="/login" className="text-sm text-muted-foreground hover:underline">
+                <Link
+                  href="/login"
+                  className="text-sm text-muted-foreground hover:underline"
+                >
                   Back to Login
                 </Link>
               </div>

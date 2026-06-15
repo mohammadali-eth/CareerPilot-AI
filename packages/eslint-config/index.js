@@ -4,7 +4,7 @@ module.exports = {
     "@next/next/no-html-link-for-pages": "off",
     "react/jsx-key": "error",
     "no-unused-vars": "warn",
-    "no-console": ["warn", { allow: ["warn", "error"] }]
+    "no-console": ["warn", { allow: ["warn", "error"] }],
   },
   parserOptions: {
     babelOptions: {

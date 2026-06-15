@@ -24,12 +24,20 @@ import {
 } from "../../../hooks/use-career";
 
 export default function CareerRecommendationsPage() {
-  const { data: history, isLoading, isError, error, refetch } = useCareerHistory();
+  const {
+    data: history,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useCareerHistory();
   const generateMutation = useGenerateRecommendation();
   const deleteMutation = useDeleteRecommendation();
 
   const [activeRec, setActiveRec] = useState<CareerRecommendation | null>(null);
-  const [selectedCareer, setSelectedCareer] = useState<CareerMatch | null>(null);
+  const [selectedCareer, setSelectedCareer] = useState<CareerMatch | null>(
+    null,
+  );
   const [comparedCareers, setComparedCareers] = useState<CareerMatch[]>([]);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -101,7 +109,10 @@ export default function CareerRecommendationsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="glass-panel p-6 rounded-xl border border-border h-48 flex flex-col justify-between">
+          <div
+            key={i}
+            className="glass-panel p-6 rounded-xl border border-border h-48 flex flex-col justify-between"
+          >
             <div className="space-y-2">
               <div className="h-4 w-32 bg-muted rounded" />
               <div className="h-6 w-48 bg-muted rounded mt-2" />
@@ -129,9 +140,12 @@ export default function CareerRecommendationsPage() {
         <AlertTriangle className="h-6 w-6" />
       </div>
       <div className="space-y-1">
-        <h3 className="text-lg font-bold text-foreground">Failed to Load Career Recommendation Engine</h3>
+        <h3 className="text-lg font-bold text-foreground">
+          Failed to Load Career Recommendation Engine
+        </h3>
         <p className="text-sm text-muted-foreground max-w-md">
-          {error?.message || "An error occurred while communicating with the matching service."}
+          {error?.message ||
+            "An error occurred while communicating with the matching service."}
         </p>
       </div>
       <button
@@ -151,9 +165,13 @@ export default function CareerRecommendationsPage() {
         <Sparkles className="h-8 w-8" />
       </div>
       <div className="space-y-2 max-w-lg">
-        <h3 className="text-2xl font-bold tracking-tight text-foreground">Run Career Recommendation Engine</h3>
+        <h3 className="text-2xl font-bold tracking-tight text-foreground">
+          Run Career Recommendation Engine
+        </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Unlock tailor-made career path recommendations by comparing your current skills, experience parameters, and certifications against thousands of positions in our career knowledge base.
+          Unlock tailor-made career path recommendations by comparing your
+          current skills, experience parameters, and certifications against
+          thousands of positions in our career knowledge base.
         </p>
       </div>
       <button
@@ -185,16 +203,28 @@ export default function CareerRecommendationsPage() {
       </h5>
       <div className="grid grid-cols-3 gap-2">
         <div className="p-2 border border-border bg-card/30 rounded-lg text-center">
-          <span className="text-[10px] text-muted-foreground block font-medium">Entry</span>
-          <span className="text-xs font-mono font-bold text-foreground mt-0.5 block">{insights.entry_level}</span>
+          <span className="text-[10px] text-muted-foreground block font-medium">
+            Entry
+          </span>
+          <span className="text-xs font-mono font-bold text-foreground mt-0.5 block">
+            {insights.entry_level}
+          </span>
         </div>
         <div className="p-2 border border-border bg-card/30 rounded-lg text-center">
-          <span className="text-[10px] text-muted-foreground block font-medium">Mid-Level</span>
-          <span className="text-xs font-mono font-bold text-foreground mt-0.5 block">{insights.mid_level}</span>
+          <span className="text-[10px] text-muted-foreground block font-medium">
+            Mid-Level
+          </span>
+          <span className="text-xs font-mono font-bold text-foreground mt-0.5 block">
+            {insights.mid_level}
+          </span>
         </div>
         <div className="p-2 border border-border bg-card/30 rounded-lg text-center">
-          <span className="text-[10px] text-muted-foreground block font-medium">Senior</span>
-          <span className="text-xs font-mono font-bold text-foreground mt-0.5 block">{insights.senior_level}</span>
+          <span className="text-[10px] text-muted-foreground block font-medium">
+            Senior
+          </span>
+          <span className="text-xs font-mono font-bold text-foreground mt-0.5 block">
+            {insights.senior_level}
+          </span>
         </div>
       </div>
     </div>
@@ -213,16 +243,24 @@ export default function CareerRecommendationsPage() {
           Market Demand
         </h5>
         <div className="flex items-center justify-between border-b border-border/60 pb-2">
-          <span className="text-xs text-muted-foreground">Demand Index Score:</span>
-          <span className={`text-lg font-extrabold ${scoreColor}`}>{demand.demand_score}%</span>
+          <span className="text-xs text-muted-foreground">
+            Demand Index Score:
+          </span>
+          <span className={`text-lg font-extrabold ${scoreColor}`}>
+            {demand.demand_score}%
+          </span>
         </div>
         <div className="space-y-1">
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">Trend:</span>
-            <span className="font-semibold text-foreground">{demand.growth_trend}</span>
+            <span className="font-semibold text-foreground">
+              {demand.growth_trend}
+            </span>
           </div>
           <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-            <span className="font-medium text-foreground block mb-0.5">Adoption Scope:</span>
+            <span className="font-medium text-foreground block mb-0.5">
+              Adoption Scope:
+            </span>
             {demand.industry_adoption}
           </p>
         </div>
@@ -231,7 +269,13 @@ export default function CareerRecommendationsPage() {
   };
 
   // 6. RecommendedPathCard Component
-  const RecommendedPathCard = ({ steps, time }: { steps: string[]; time: string }) => (
+  const RecommendedPathCard = ({
+    steps,
+    time,
+  }: {
+    steps: string[];
+    time: string;
+  }) => (
     <div className="glass-panel p-4 rounded-xl border border-border/80 bg-muted/10 space-y-3">
       <div className="flex items-center justify-between">
         <h5 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
@@ -264,8 +308,8 @@ export default function CareerRecommendationsPage() {
       match.match_score < 60
         ? "text-rose-500 bg-rose-500/10 border-rose-500/20"
         : match.match_score < 80
-        ? "text-amber-500 bg-amber-500/10 border-amber-500/20"
-        : "text-emerald-500 bg-emerald-500/10 border-emerald-500/20";
+          ? "text-amber-500 bg-amber-500/10 border-amber-500/20"
+          : "text-emerald-500 bg-emerald-500/10 border-emerald-500/20";
 
     return (
       <div className="glass-panel p-5 rounded-xl border border-border flex flex-col justify-between hover:border-primary/40 transition-all duration-200 group relative">
@@ -274,28 +318,36 @@ export default function CareerRecommendationsPage() {
             <h4 className="font-bold text-base text-foreground truncate max-w-[70%]">
               {match.career_name}
             </h4>
-            <span className={`px-2.5 py-0.5 text-xs font-bold rounded-md border ${scoreColor}`}>
+            <span
+              className={`px-2.5 py-0.5 text-xs font-bold rounded-md border ${scoreColor}`}
+            >
               {match.match_score}% Match
             </span>
           </div>
           <p className="text-xs text-muted-foreground line-clamp-3 leading-relaxed">
-            {details.why_it_matches || "Semantically aligned with your professional credentials."}
+            {details.why_it_matches ||
+              "Semantically aligned with your professional credentials."}
           </p>
         </div>
 
         <div className="mt-4 pt-4 border-t border-border/60 flex items-center justify-between text-xs">
           <span className="text-muted-foreground">
             {missingCount > 0 ? (
-              <span className="text-amber-500 font-semibold">{missingCount} Skill Gaps</span>
+              <span className="text-amber-500 font-semibold">
+                {missingCount} Skill Gaps
+              </span>
             ) : (
-              <span className="text-emerald-500 font-semibold">100% Skills Fit</span>
+              <span className="text-emerald-500 font-semibold">
+                100% Skills Fit
+              </span>
             )}
           </span>
           <button
             onClick={() => openDetails(match)}
             className="text-primary font-semibold flex items-center gap-0.5 hover:underline"
           >
-            Insights <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+            Insights{" "}
+            <ChevronRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       </div>
@@ -307,7 +359,9 @@ export default function CareerRecommendationsPage() {
     <div className="glass-panel rounded-xl border border-border overflow-hidden">
       <div className="p-4 border-b border-border/80 bg-muted/20 flex items-center justify-between">
         <h4 className="font-bold text-sm">Full Career Ranking Matrix</h4>
-        <div className="text-xs text-muted-foreground">Sorted by Match Score</div>
+        <div className="text-xs text-muted-foreground">
+          Sorted by Match Score
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse text-xs">
@@ -324,23 +378,34 @@ export default function CareerRecommendationsPage() {
           <tbody className="divide-y divide-border">
             {matches.map((match) => {
               const details = match.details || {};
-              const isCompared = comparedCareers.some((c) => c.career_name === match.career_name);
-              
+              const isCompared = comparedCareers.some(
+                (c) => c.career_name === match.career_name,
+              );
+
               let scoreColor = "text-emerald-500";
               if (match.match_score < 60) scoreColor = "text-rose-500";
               else if (match.match_score < 80) scoreColor = "text-amber-500";
 
               return (
-                <tr key={match.id} className="hover:bg-muted/30 transition-colors">
-                  <td className="p-4 font-semibold text-foreground">{match.career_name}</td>
+                <tr
+                  key={match.id}
+                  className="hover:bg-muted/30 transition-colors"
+                >
+                  <td className="p-4 font-semibold text-foreground">
+                    {match.career_name}
+                  </td>
                   <td className="p-4 text-center font-bold">
                     <span className={scoreColor}>{match.match_score}%</span>
                   </td>
                   <td className="p-4 text-center font-mono text-muted-foreground">
                     {(match.confidence_score * 100).toFixed(0)}%
                   </td>
-                  <td className="p-4 font-mono text-muted-foreground">{details.salary_insights?.mid_level || "N/A"}</td>
-                  <td className="p-4 text-muted-foreground">{details.market_demand?.growth_trend || "N/A"}</td>
+                  <td className="p-4 font-mono text-muted-foreground">
+                    {details.salary_insights?.mid_level || "N/A"}
+                  </td>
+                  <td className="p-4 text-muted-foreground">
+                    {details.market_demand?.growth_trend || "N/A"}
+                  </td>
                   <td className="p-4 text-right space-x-2">
                     <button
                       onClick={() => toggleCompare(match)}
@@ -376,7 +441,10 @@ export default function CareerRecommendationsPage() {
     return (
       <div className="fixed inset-0 z-50 flex justify-end bg-background/80 backdrop-blur-sm animate-fade-in">
         {/* Backdrop overlay */}
-        <div className="absolute inset-0" onClick={() => setIsDrawerOpen(false)} />
+        <div
+          className="absolute inset-0"
+          onClick={() => setIsDrawerOpen(false)}
+        />
 
         <div className="relative w-full max-w-xl h-full border-l border-border bg-card/95 backdrop-blur-md shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
           <div>
@@ -386,7 +454,9 @@ export default function CareerRecommendationsPage() {
                 <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
                   Path Intelligence Analysis
                 </span>
-                <h3 className="text-xl font-bold mt-1 text-foreground">{selectedCareer.career_name}</h3>
+                <h3 className="text-xl font-bold mt-1 text-foreground">
+                  {selectedCareer.career_name}
+                </h3>
               </div>
               <button
                 onClick={() => setIsDrawerOpen(false)}
@@ -430,7 +500,8 @@ export default function CareerRecommendationsPage() {
                     Your Skill Gaps
                   </span>
                   <div className="flex flex-wrap gap-1">
-                    {details.missing_skills && details.missing_skills.length > 0 ? (
+                    {details.missing_skills &&
+                    details.missing_skills.length > 0 ? (
                       details.missing_skills.map((skill) => (
                         <span
                           key={skill}
@@ -492,9 +563,12 @@ export default function CareerRecommendationsPage() {
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
             <div>
-              <h3 className="text-lg font-bold text-foreground">Career Path Comparison Matrix</h3>
+              <h3 className="text-lg font-bold text-foreground">
+                Career Path Comparison Matrix
+              </h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Analyze matched parameters side-by-side to determine your optimal learning trajectory.
+                Analyze matched parameters side-by-side to determine your
+                optimal learning trajectory.
               </p>
             </div>
             <button
@@ -510,9 +584,14 @@ export default function CareerRecommendationsPage() {
             <table className="w-full text-left border-collapse text-xs">
               <thead>
                 <tr className="border-b border-border bg-muted/10">
-                  <th className="p-4 font-semibold text-muted-foreground w-1/4">Comparison Metric</th>
+                  <th className="p-4 font-semibold text-muted-foreground w-1/4">
+                    Comparison Metric
+                  </th>
                   {comparedCareers.map((c) => (
-                    <th key={c.id} className="p-4 font-bold text-foreground w-1/4">
+                    <th
+                      key={c.id}
+                      className="p-4 font-bold text-foreground w-1/4"
+                    >
                       {c.career_name}
                     </th>
                   ))}
@@ -520,15 +599,22 @@ export default function CareerRecommendationsPage() {
               </thead>
               <tbody className="divide-y divide-border">
                 <tr className="hover:bg-muted/10">
-                  <td className="p-4 font-medium text-muted-foreground">Match Score</td>
+                  <td className="p-4 font-medium text-muted-foreground">
+                    Match Score
+                  </td>
                   {comparedCareers.map((c) => (
-                    <td key={c.id} className="p-4 font-extrabold text-indigo-400">
+                    <td
+                      key={c.id}
+                      className="p-4 font-extrabold text-indigo-400"
+                    >
                       {c.match_score}%
                     </td>
                   ))}
                 </tr>
                 <tr className="hover:bg-muted/10">
-                  <td className="p-4 font-medium text-muted-foreground">Median Salary Range</td>
+                  <td className="p-4 font-medium text-muted-foreground">
+                    Median Salary Range
+                  </td>
                   {comparedCareers.map((c) => (
                     <td key={c.id} className="p-4 font-mono">
                       {c.details?.salary_insights?.mid_level || "N/A"}
@@ -536,7 +622,9 @@ export default function CareerRecommendationsPage() {
                   ))}
                 </tr>
                 <tr className="hover:bg-muted/10">
-                  <td className="p-4 font-medium text-muted-foreground">Market Demand Index</td>
+                  <td className="p-4 font-medium text-muted-foreground">
+                    Market Demand Index
+                  </td>
                   {comparedCareers.map((c) => (
                     <td key={c.id} className="p-4 font-bold">
                       {c.details?.market_demand?.demand_score || 0}%
@@ -544,7 +632,9 @@ export default function CareerRecommendationsPage() {
                   ))}
                 </tr>
                 <tr className="hover:bg-muted/10">
-                  <td className="p-4 font-medium text-muted-foreground">Growth Outlook</td>
+                  <td className="p-4 font-medium text-muted-foreground">
+                    Growth Outlook
+                  </td>
                   {comparedCareers.map((c) => (
                     <td key={c.id} className="p-4">
                       {c.details?.market_demand?.growth_trend || "N/A"}
@@ -552,7 +642,9 @@ export default function CareerRecommendationsPage() {
                   ))}
                 </tr>
                 <tr className="hover:bg-muted/10">
-                  <td className="p-4 font-medium text-muted-foreground">Est. Learning Time</td>
+                  <td className="p-4 font-medium text-muted-foreground">
+                    Est. Learning Time
+                  </td>
                   {comparedCareers.map((c) => (
                     <td key={c.id} className="p-4">
                       {c.details?.estimated_learning_time || "N/A"}
@@ -560,10 +652,13 @@ export default function CareerRecommendationsPage() {
                   ))}
                 </tr>
                 <tr className="hover:bg-muted/10">
-                  <td className="p-4 font-medium text-muted-foreground">Skill Gaps Remaining</td>
+                  <td className="p-4 font-medium text-muted-foreground">
+                    Skill Gaps Remaining
+                  </td>
                   {comparedCareers.map((c) => (
                     <td key={c.id} className="p-4">
-                      {c.details?.missing_skills && c.details.missing_skills.length > 0 ? (
+                      {c.details?.missing_skills &&
+                      c.details.missing_skills.length > 0 ? (
                         <div className="flex flex-wrap gap-1 max-w-[200px]">
                           {c.details.missing_skills.slice(0, 3).map((s) => (
                             <span
@@ -621,9 +716,12 @@ export default function CareerRecommendationsPage() {
       {/* 1. Page Header & Generation Actions */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-6">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Career Match Workspace</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight">
+            Career Match Workspace
+          </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Semantic match reports matching your resume and profiles against the career knowledge base.
+            Semantic match reports matching your resume and profiles against the
+            career knowledge base.
           </p>
         </div>
 
@@ -682,7 +780,10 @@ export default function CareerRecommendationsPage() {
           {comparedCareers.length > 0 && (
             <div className="fixed bottom-6 right-6 z-40 bg-card border border-border rounded-xl shadow-premium px-4 py-3 flex items-center gap-4 animate-fade-in-up">
               <div className="text-xs">
-                <span className="font-bold text-indigo-400">{comparedCareers.length}</span> careers selected for side-by-side comparison
+                <span className="font-bold text-indigo-400">
+                  {comparedCareers.length}
+                </span>{" "}
+                careers selected for side-by-side comparison
               </div>
               <div className="flex gap-2">
                 <button

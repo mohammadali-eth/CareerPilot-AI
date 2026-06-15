@@ -124,9 +124,10 @@ careerpilot-ai/
 
 ## 2. Architectural Reasoning
 
-CareerPilot AI follows **Clean Architecture** principles and **Domain-Driven Design (DDD)** to create decoupled, easily testable components. 
+CareerPilot AI follows **Clean Architecture** principles and **Domain-Driven Design (DDD)** to create decoupled, easily testable components.
 
 ### Separation of Concerns
+
 1. **The Core / Entities (Models Layer):** The SQL Alchemy models define the structural data schemas. They do not know about endpoints, protocols, or storage frameworks.
 2. **Use Case Layer (Services):** Orchestrates the data flow between entities, AI pipelines, and repositories. Services contain pure business requirements (e.g., "calculate skill gap score") and do not directly access the database, maintaining high modularity.
 3. **Interface Adapters (Repositories, Schemas, Routers):** Translates data from database representation to external APIs.
@@ -135,6 +136,7 @@ CareerPilot AI follows **Clean Architecture** principles and **Domain-Driven Des
    - **Routers:** Expose API contracts, map URL parameters, and handle HTTP response status codes.
 
 ### SOLID Principles
+
 - **Single Responsibility Principle (SRP):** Each route handler only directs HTTP traffic; each service class only coordinates one business domain; each repository handles one model.
 - **Dependency Inversion Principle (DIP):** Routers inject services, services inject repositories, and repositories inject database sessions using FastAPI's dependency injection container (`Depends`), making testing trivial via mocks.
 - **Open-Closed Principle (OCP):** AI provider integrations use abstract interfaces. Introducing Google Gemini or Anthropic alongside OpenAI only requires creating a new provider implementing the abstract interface class.
@@ -146,15 +148,18 @@ CareerPilot AI follows **Clean Architecture** principles and **Domain-Driven Des
 To support rapid growth and peak load demands, CareerPilot AI implements a stateless, horizontally autoscaling architecture:
 
 ### 1. Database Scaling & vector Search
+
 - PostgreSQL handles transactional data with read-replicas.
 - **Vector Search (pgvector):** User profile vectors and resume embedding indices are stored in PostgreSQL using the HNSW index type for $O(\log N)$ similarity query performance.
 
 ### 2. Queueing & Asynchronous Processing
+
 - Heavy operations (such as processing complex multi-page PDFs, building large RAG context windows, and generating personalized career roadmaps) are offloaded to **Celery workers** using Redis as the transport broker.
 - Keeps FastAPI main event loops unblocked, ensuring high throughput and sub-50ms API responses for general traffic.
 
 ### 3. Stateless REST Controllers
-- Backend APIs run fully stateless. Session validation is token-based (JWT with Redis-backed blocklists). 
+
+- Backend APIs run fully stateless. Session validation is token-based (JWT with Redis-backed blocklists).
 - Allows containers to scale instantly using auto-scaling groups on Render or AWS ECS.
 
 ---
@@ -162,6 +167,7 @@ To support rapid growth and peak load demands, CareerPilot AI implements a state
 ## 4. Security Considerations
 
 We apply defense-in-depth across the entire stack:
+
 1. **Least Privilege access:** Database connections are isolated. API keys and passwords are hashed using bcrypt.
 2. **Rate Limiting:** IP-based and user-based limits are configured via FastAPI middleware using a Redis token bucket algorithm.
 3. **Role-Based Access Control (RBAC):** Users, Premium Users, and Administrators are strictly checked using route-level FastAPI dependencies.
@@ -172,6 +178,7 @@ We apply defense-in-depth across the entire stack:
 ## 5. Future Extensibility Considerations
 
 The architecture anticipates platform updates:
+
 - **Plug-and-Play AI Models:** Models can be swapped globally by updating a configuration flag (e.g., swapping `gpt-4o` with `gemini-1.5-pro`).
 - **Feature Flagging:** The modular feature-based structure (`apps/web/features/*` and `apps/api/api/v1/*`) allows clean environment-based feature gates (e.g., enabling "Voice Interview Simulator" only for selected beta users).
 - **Extending to Microservices:** If any sub-feature (like Resume Parsing or ML Recommendation Engines) requires specialized resources (like GPU acceleration), its repository/service boundaries allow it to be easily decoupled into a standalone service without changing other parts of the monorepo.

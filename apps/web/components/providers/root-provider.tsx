@@ -43,8 +43,6 @@ export function RootProvider({ children }: { children: React.ReactNode }) {
   }, [accessToken, setAuth, clearAuth, setInitialized]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }

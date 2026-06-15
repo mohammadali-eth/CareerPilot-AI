@@ -9,7 +9,8 @@ export default function CareerMatchPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Career Match</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Evaluate how your profile aligns with target roles across leading tech companies.
+          Evaluate how your profile aligns with target roles across leading tech
+          companies.
         </p>
       </div>
 
@@ -33,7 +34,9 @@ export default function CareerMatchPage() {
                 <Briefcase className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold">Senior Full Stack Engineer</h4>
+                <h4 className="text-sm font-semibold">
+                  Senior Full Stack Engineer
+                </h4>
                 <p className="text-xs text-muted-foreground">Vercel — Remote</p>
               </div>
             </div>
@@ -51,8 +54,12 @@ export default function CareerMatchPage() {
                 <Briefcase className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="text-sm font-semibold">Staff Frontend Engineer</h4>
-                <p className="text-xs text-muted-foreground">Stripe — San Francisco, CA</p>
+                <h4 className="text-sm font-semibold">
+                  Staff Frontend Engineer
+                </h4>
+                <p className="text-xs text-muted-foreground">
+                  Stripe — San Francisco, CA
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3">

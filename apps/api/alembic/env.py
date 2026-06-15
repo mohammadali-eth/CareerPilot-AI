@@ -18,6 +18,7 @@ from models.user import User, Profile, AuthToken # noqa
 from models.resume import Resume, ResumeScore, ATSReport # noqa
 from models.career import CareerRecommendation, CareerMatch # noqa
 from models.roadmap import Roadmap, RoadmapMilestone, RoadmapProgress # noqa
+from models.interview import InterviewSession, InterviewQuestion, InterviewAnswer # noqa
 
 # Alembic Config object representing the INI values
 config = context.config

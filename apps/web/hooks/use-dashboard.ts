@@ -29,7 +29,8 @@ const successData: DashboardMetrics = {
       id: "act-1",
       type: "upload",
       title: "Resume Analyzed",
-      description: "Extracted work history and skills from Senior_Developer_CV.pdf",
+      description:
+        "Extracted work history and skills from Senior_Developer_CV.pdf",
       timestamp: "2 hours ago",
     },
     {
@@ -58,7 +59,9 @@ const emptyData: DashboardMetrics = {
   recentActivity: [],
 };
 
-export function useDashboardData(simulatedState: "success" | "empty" | "error" = "success") {
+export function useDashboardData(
+  simulatedState: "success" | "empty" | "error" = "success",
+) {
   return useQuery<DashboardMetrics, Error>({
     queryKey: ["dashboard-stats", simulatedState],
     queryFn: async () => {
@@ -66,7 +69,9 @@ export function useDashboardData(simulatedState: "success" | "empty" | "error" =
       await new Promise((resolve) => setTimeout(resolve, 1200));
 
       if (simulatedState === "error") {
-        throw new Error("Failed to load dashboard metrics. Database server is temporarily unresponsive.");
+        throw new Error(
+          "Failed to load dashboard metrics. Database server is temporarily unresponsive.",
+        );
       }
 
       if (simulatedState === "empty") {

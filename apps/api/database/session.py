@@ -45,6 +45,7 @@ async def init_db() -> None:
     Utility initialization helper to verify connection state.
     Actual tables creation should be managed via Alembic migrations.
     """
+    from sqlalchemy import text
     async with engine.begin() as conn:
         # Verify connection test
-        await conn.execute("SELECT 1")
+        await conn.execute(text("SELECT 1"))

@@ -24,7 +24,10 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 export default function RegisterPage() {
   const registerMutation = useRegister();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successData, setSuccessData] = useState<{ message: string; verification_token?: string } | null>(null);
+  const [successData, setSuccessData] = useState<{
+    message: string;
+    verification_token?: string;
+  } | null>(null);
 
   const {
     register,
@@ -47,7 +50,10 @@ export default function RegisterPage() {
       const result = await registerMutation.mutateAsync(data);
       setSuccessData(result);
     } catch (err: any) {
-      setErrorMessage(err.message || "An error occurred during registration. Please try again.");
+      setErrorMessage(
+        err.message ||
+          "An error occurred during registration. Please try again.",
+      );
     }
   };
 
@@ -60,12 +66,15 @@ export default function RegisterPage() {
           </div>
           <h2 className="text-2xl font-bold">Registration Successful</h2>
           <p className="text-sm text-muted-foreground">
-            {successData.message || "Account registered successfully. Please verify your email."}
+            {successData.message ||
+              "Account registered successfully. Please verify your email."}
           </p>
 
           {successData.verification_token && (
             <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-lg text-left text-xs font-mono space-y-2">
-              <p className="text-emerald-400 font-semibold">Simulated Verification Link:</p>
+              <p className="text-emerald-400 font-semibold">
+                Simulated Verification Link:
+              </p>
               <Link
                 href={`/verify-email?token=${successData.verification_token}`}
                 className="text-primary hover:underline break-all block"
@@ -93,13 +102,21 @@ export default function RegisterPage() {
       <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl shadow-premium border border-border">
         {/* Header */}
         <div className="text-center">
-          <Link href="/" className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+          <Link
+            href="/"
+            className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+          >
             CareerPilot AI
           </Link>
-          <h2 className="mt-6 text-3xl font-extrabold tracking-tight">Create your account</h2>
+          <h2 className="mt-6 text-3xl font-extrabold tracking-tight">
+            Create your account
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link href="/login" className="font-semibold text-primary hover:underline">
+            <Link
+              href="/login"
+              className="font-semibold text-primary hover:underline"
+            >
               Sign in
             </Link>
           </p>
@@ -116,71 +133,99 @@ export default function RegisterPage() {
         <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="first_name" className="block text-sm font-medium text-foreground">
+              <label
+                htmlFor="first_name"
+                className="block text-sm font-medium text-foreground"
+              >
                 First Name
               </label>
               <input
                 id="first_name"
                 type="text"
                 className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                  errors.first_name ? "border-destructive focus:ring-destructive/50" : "border-input"
+                  errors.first_name
+                    ? "border-destructive focus:ring-destructive/50"
+                    : "border-input"
                 }`}
                 {...register("first_name")}
               />
               {errors.first_name && (
-                <p className="mt-1 text-xs text-destructive">{errors.first_name.message}</p>
+                <p className="mt-1 text-xs text-destructive">
+                  {errors.first_name.message}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="last_name" className="block text-sm font-medium text-foreground">
+              <label
+                htmlFor="last_name"
+                className="block text-sm font-medium text-foreground"
+              >
                 Last Name
               </label>
               <input
                 id="last_name"
                 type="text"
                 className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                  errors.last_name ? "border-destructive focus:ring-destructive/50" : "border-input"
+                  errors.last_name
+                    ? "border-destructive focus:ring-destructive/50"
+                    : "border-input"
                 }`}
                 {...register("last_name")}
               />
               {errors.last_name && (
-                <p className="mt-1 text-xs text-destructive">{errors.last_name.message}</p>
+                <p className="mt-1 text-xs text-destructive">
+                  {errors.last_name.message}
+                </p>
               )}
             </div>
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-foreground">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-foreground"
+            >
               Email address
             </label>
             <input
               id="email"
               type="email"
               className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                errors.email ? "border-destructive focus:ring-destructive/50" : "border-input"
+                errors.email
+                  ? "border-destructive focus:ring-destructive/50"
+                  : "border-input"
               }`}
               {...register("email")}
             />
             {errors.email && (
-              <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
+              <p className="mt-1 text-xs text-destructive">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-foreground">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-foreground"
+            >
               Password
             </label>
             <input
               id="password"
               type="password"
               className={`mt-1 block w-full px-4 py-2 bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm ${
-                errors.password ? "border-destructive focus:ring-destructive/50" : "border-input"
+                errors.password
+                  ? "border-destructive focus:ring-destructive/50"
+                  : "border-input"
               }`}
               {...register("password")}
             />
             {errors.password && (
-              <p className="mt-1 text-xs text-destructive">{errors.password.message}</p>
+              <p className="mt-1 text-xs text-destructive">
+                {errors.password.message}
+              </p>
             )}
           </div>
 

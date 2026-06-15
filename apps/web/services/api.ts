@@ -1,6 +1,7 @@
 import { useAuthStore } from "../store/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
 interface RequestOptions extends RequestInit {
   skipAuth?: boolean;
@@ -25,12 +26,18 @@ class ApiClient {
 
     // Setup headers
     const headers = new Headers(fetchOptions.headers || {});
-    if (!headers.has("Content-Type") && !(fetchOptions.body instanceof FormData)) {
+    if (
+      !headers.has("Content-Type") &&
+      !(fetchOptions.body instanceof FormData)
+    ) {
       headers.set("Content-Type", "application/json");
     }
 
     // Attach access token
-    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("access_token")
+        : null;
     if (token && !skipAuth) {
       headers.set("Authorization", `Bearer ${token}`);
     }
@@ -47,7 +54,9 @@ class ApiClient {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || "An error occurred while processing the request.");
+        throw new Error(
+          errorData.detail || "An error occurred while processing the request.",
+        );
       }
 
       // Handle 204 No Content
@@ -61,8 +70,14 @@ class ApiClient {
     }
   }
 
-  private async handleUnauthorized(endpoint: string, options: RequestInit): Promise<any> {
-    const refreshToken = typeof window !== "undefined" ? localStorage.getItem("refresh_token") : null;
+  private async handleUnauthorized(
+    endpoint: string,
+    options: RequestInit,
+  ): Promise<any> {
+    const refreshToken =
+      typeof window !== "undefined"
+        ? localStorage.getItem("refresh_token")
+        : null;
     const clearAuth = useAuthStore.getState().clearAuth;
 
     if (!refreshToken) {
@@ -95,9 +110,9 @@ class ApiClient {
         // Fetch new profile state
         const userProfile = await fetch(`${API_URL}/users/me`, {
           headers: {
-            "Authorization": `Bearer ${data.access_token}`,
-          }
-        }).then(res => res.json());
+            Authorization: `Bearer ${data.access_token}`,
+          },
+        }).then((res) => res.json());
 
         setAuth(data.access_token, data.refresh_token, userProfile);
         this.isRefreshing = false;
@@ -138,20 +153,22 @@ class ApiClient {
   }
 
   post(endpoint: string, body?: any, options?: RequestOptions) {
-    const isFormData = typeof window !== "undefined" && body instanceof FormData;
+    const isFormData =
+      typeof window !== "undefined" && body instanceof FormData;
     return this.request(endpoint, {
       ...options,
       method: "POST",
-      body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
+      body: isFormData ? body : body ? JSON.stringify(body) : undefined,
     });
   }
 
   put(endpoint: string, body?: any, options?: RequestOptions) {
-    const isFormData = typeof window !== "undefined" && body instanceof FormData;
+    const isFormData =
+      typeof window !== "undefined" && body instanceof FormData;
     return this.request(endpoint, {
       ...options,
       method: "PUT",
-      body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
+      body: isFormData ? body : body ? JSON.stringify(body) : undefined,
     });
   }
 

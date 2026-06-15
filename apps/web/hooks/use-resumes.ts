@@ -59,7 +59,7 @@ export function useUploadResume() {
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append("file", file);
-      
+
       return api.post("/resumes/upload", formData);
     },
     onSuccess: () => {

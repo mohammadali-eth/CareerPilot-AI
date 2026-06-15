@@ -10,8 +10,10 @@ export function useLogin() {
   return useMutation({
     mutationFn: async (credentials: any) => {
       // 1. Authenticate user
-      const tokens = await api.post("/auth/login", credentials, { skipAuth: true });
-      
+      const tokens = await api.post("/auth/login", credentials, {
+        skipAuth: true,
+      });
+
       // 2. Fetch authenticated profile data
       const userProfile = await api.get("/users/me", {
         headers: { Authorization: `Bearer ${tokens.access_token}` },
@@ -66,7 +68,7 @@ export function useResetPassword() {
 // Fetch Profile Query Hook
 export function useUserProfile() {
   const { accessToken, clearAuth } = useAuthStore();
-  
+
   return useQuery({
     queryKey: ["user-profile", accessToken],
     queryFn: async () => {
@@ -108,7 +110,9 @@ export function useLogout() {
   return useMutation({
     mutationFn: async () => {
       if (refreshToken) {
-        await api.post("/auth/logout", { refresh_token: refreshToken }).catch(() => {});
+        await api
+          .post("/auth/logout", { refresh_token: refreshToken })
+          .catch(() => {});
       }
       clearAuth();
     },
